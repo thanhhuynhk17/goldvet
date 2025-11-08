@@ -10,6 +10,13 @@ import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { Achievements } from '@/blocks/Achievements/config'
+import { HeroCarousel } from '@/blocks/HeroCarousel/config'
+import { Statistics } from '@/blocks/Statistics/config'
+import { ProductShowcase } from '@/blocks/ProductShowcase/config'
+import { NewsGrid } from '@/blocks/NewsGrid/config'
+import { AboutSection } from '@/blocks/AboutSection/config'
+import { ProductSection } from '@/blocks/ProductSection/config'
 import { hero } from '@/fields/hero'
 import { slugField } from 'payload'
 import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
@@ -88,6 +95,13 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                AboutSection,
+                ProductSection,
+                Achievements,
+                HeroCarousel,
+                Statistics,
+                ProductShowcase,
+                NewsGrid,
                 CallToAction,
                 Content,
                 MediaBlock,

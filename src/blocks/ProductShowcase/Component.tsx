@@ -14,7 +14,7 @@ export const ProductShowcaseBlock: React.FC<
 > = async ({ className, title, displayCount = 8, filterBy = 'featured' }) => {
   const payload = await getPayload({ config: configPromise })
 
-  let where: any = {
+  const where: any = {
     _status: {
       equals: 'published',
     },
@@ -31,7 +31,7 @@ export const ProductShowcaseBlock: React.FC<
     collection: 'products',
     draft: false,
     overrideAccess: false,
-    limit: displayCount,
+    limit: displayCount || 8,
     select: {
       title: true,
       slug: true,

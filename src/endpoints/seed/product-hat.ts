@@ -63,6 +63,10 @@ export const productHatData: (args: ProductArgs) => RequiredDataFromCollectionSl
     slug: 'hat',
     priceInUSDEnabled: true,
     priceInUSD: 2500,
+    animalType: 'pets',
+    formulation: 'external',
+    productType: 'support',
+    featured: false,
     relatedProducts: relatedProducts,
   }
 }

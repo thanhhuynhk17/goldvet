@@ -1171,6 +1171,10 @@ export const productTshirtData: (
     slug: 'tshirt',
     priceInUSDEnabled: true,
     priceInUSD: 4999,
+    animalType: 'pets',
+    formulation: 'external',
+    productType: 'support',
+    featured: false,
     relatedProducts: relatedProducts,
   }
 }

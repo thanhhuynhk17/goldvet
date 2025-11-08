@@ -14,7 +14,7 @@ export const NewsGridBlock: React.FC<
 > = async ({ className, title, category = 'all', displayCount = 6 }) => {
   const payload = await getPayload({ config: configPromise })
 
-  let where: any = {
+  const where: any = {
     _status: {
       equals: 'published',
     },
@@ -31,7 +31,7 @@ export const NewsGridBlock: React.FC<
     collection: 'news',
     draft: false,
     overrideAccess: false,
-    limit: displayCount,
+    limit: displayCount || 6,
     select: {
       title: true,
       slug: true,
@@ -120,7 +120,7 @@ export const NewsGridBlock: React.FC<
           ))}
         </div>
 
-        {news.totalDocs > displayCount && (
+        {news.totalDocs > (displayCount || 6) && (
           <div className="text-center mt-12">
             <Link
               href="/tin-tuc"

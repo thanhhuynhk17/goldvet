@@ -1,3 +1,6 @@
+import { AboutSectionBlock } from '@/blocks/AboutSection/Component'
+import { ProductSectionBlock } from '@/blocks/ProductSection/Component'
+import { AchievementsBlock } from '@/blocks/Achievements/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
@@ -16,6 +19,9 @@ import React, { Fragment } from 'react'
 import type { Page } from '../payload-types'
 
 const blockComponents = {
+  aboutSection: AboutSectionBlock,
+  productSection: ProductSectionBlock,
+  achievements: AchievementsBlock,
   archive: ArchiveBlock,
   banner: BannerBlock,
   carousel: CarouselBlock,
@@ -47,8 +53,10 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              // Remove margin for hero carousel (first block) to allow full height
+              const isHeroCarousel = blockType === 'heroCarousel' && index === 0
               return (
-                <div className="my-16" key={index}>
+                <div className={isHeroCarousel ? "" : "my-16"} key={index}>
                   {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                   {/* @ts-ignore - weird type mismatch here */}
                   <Block id={toKebabCase(blockName!)} {...block} />

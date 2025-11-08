@@ -94,7 +94,7 @@ export default async function SanPhamPage({ searchParams }: Props) {
   const resultsText = products.docs.length > 1 ? 'kết quả' : 'kết quả'
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-24">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">Sản Phẩm</h1>
         <p className="text-gray-600">
@@ -119,7 +119,7 @@ export default async function SanPhamPage({ searchParams }: Props) {
             {products.docs?.length === 0
               ? 'Không tìm thấy sản phẩm nào phù hợp với '
               : `Hiển thị ${products.docs.length} ${resultsText} cho `}
-            <span className="font-bold">"{searchValue}"</span>
+            <span className="font-bold">&ldquo;{searchValue}&rdquo;</span>
           </p>
         ) : (
           <p className="text-gray-600">

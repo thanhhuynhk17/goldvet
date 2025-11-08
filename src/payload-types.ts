@@ -479,6 +479,13 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
+    | AboutSectionBlock
+    | ProductSectionBlock
+    | AchievementsBlock
+    | HeroCarouselBlock
+    | StatisticsBlock
+    | ProductShowcaseBlock
+    | NewsGridBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -504,6 +511,135 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock".
+ */
+export interface AboutSectionBlock {
+  /**
+   * First line of the main title (red color)
+   */
+  titleLine1: string;
+  /**
+   * Second line of the main title (green color)
+   */
+  titleLine2: string;
+  /**
+   * Description text to display below the title
+   */
+  description?: string | null;
+  /**
+   * Video file to display in the video section
+   */
+  video?: (number | null) | Media;
+  /**
+   * Background image overlay (world map recommended)
+   */
+  backgroundImage?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductSectionBlock".
+ */
+export interface ProductSectionBlock {
+  /**
+   * Tiêu đề hiển thị của section sản phẩm
+   */
+  title: string;
+  /**
+   * Số lượng sản phẩm hiển thị ban đầu
+   */
+  displayCount: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AchievementsBlock".
+ */
+export interface AchievementsBlock {
+  title: string;
+  mainNumber: string;
+  mainNumberLabel: string;
+  tagline: string;
+  achievements?:
+    | {
+        icon: 'shield' | 'factory' | 'box' | 'network';
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'achievements';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCarouselBlock".
+ */
+export interface HeroCarouselBlock {
+  slides?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        subtitle?: string | null;
+        link: {
+          label: string;
+          url: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatisticsBlock".
+ */
+export interface StatisticsBlock {
+  stats?:
+    | {
+        number: string;
+        label: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statistics';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductShowcaseBlock".
+ */
+export interface ProductShowcaseBlock {
+  title?: string | null;
+  displayCount?: number | null;
+  filterBy?: ('featured' | 'latest' | 'random') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsGridBlock".
+ */
+export interface NewsGridBlock {
+  title?: string | null;
+  category?: ('all' | 'company' | 'industry') | null;
+  displayCount?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1259,6 +1395,13 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        aboutSection?: T | AboutSectionBlockSelect<T>;
+        productSection?: T | ProductSectionBlockSelect<T>;
+        achievements?: T | AchievementsBlockSelect<T>;
+        heroCarousel?: T | HeroCarouselBlockSelect<T>;
+        statistics?: T | StatisticsBlockSelect<T>;
+        productShowcase?: T | ProductShowcaseBlockSelect<T>;
+        newsGrid?: T | NewsGridBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1280,6 +1423,109 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSectionBlock_select".
+ */
+export interface AboutSectionBlockSelect<T extends boolean = true> {
+  titleLine1?: T;
+  titleLine2?: T;
+  description?: T;
+  video?: T;
+  backgroundImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductSectionBlock_select".
+ */
+export interface ProductSectionBlockSelect<T extends boolean = true> {
+  title?: T;
+  displayCount?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AchievementsBlock_select".
+ */
+export interface AchievementsBlockSelect<T extends boolean = true> {
+  title?: T;
+  mainNumber?: T;
+  mainNumberLabel?: T;
+  tagline?: T;
+  achievements?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCarouselBlock_select".
+ */
+export interface HeroCarouselBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        subtitle?: T;
+        link?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatisticsBlock_select".
+ */
+export interface StatisticsBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        number?: T;
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductShowcaseBlock_select".
+ */
+export interface ProductShowcaseBlockSelect<T extends boolean = true> {
+  title?: T;
+  displayCount?: T;
+  filterBy?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsGridBlock_select".
+ */
+export interface NewsGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  displayCount?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
