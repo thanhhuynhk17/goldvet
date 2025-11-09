@@ -43,7 +43,7 @@ export function HeaderClient({ header, homePage }: Props) {
     { label: 'TRANG CHỦ', url: '/', icon: Home },
     { label: 'CỬA HÀNG', url: '/cua-hang', icon: Store },
     { label: 'BÀI VIẾT', url: '/bai-viet', icon: FileText },
-    { label: 'LIÊN HỆ NGAY', url: '/lien-he-ngay', icon: Phone },
+    { label: 'LIÊN HỆ', url: '/lien-he', icon: Phone },
     { label: 'GIỚI THIỆU', url: '/gioi-thieu', icon: Info },
     { label: 'CHÍNH SÁCH', url: '/chinh-sach', icon: FileCheck },
   ]

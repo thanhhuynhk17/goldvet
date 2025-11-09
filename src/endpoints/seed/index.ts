@@ -1,8 +1,6 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest } from 'payload'
 
 import { contactFormData } from './contact-form.js'
-import { contactPageData } from './contact-page.js'
-import { lienHeData } from './lien-he.js'
 import {
   productVeterinaryData,
   productVaccineData,
@@ -24,6 +22,7 @@ import { homeStaticData } from './home-static.js'
 import { gioiThieuData } from './gioi-thieu.js'
 import { baiVietData } from './bai-viet.js'
 import { cuaHangData } from './cua-hang.js'
+import { lienHeData } from './lien-he.js'
 import { Address, Transaction } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
@@ -239,17 +238,31 @@ export const seed = async ({
     }),
   ])
 
+  payload.logger.info(`— Seeding contact form...`)
+
+  const contactForm = await payload.create({
+    collection: 'forms',
+    depth: 0,
+    data: contactFormData(),
+  })
+
+  // Create contact banner image
+  const contactBanner = await payload.create({
+    collection: 'media',
+    data: {
+      alt: 'Liên hệ với Goldvet',
+    },
+    file: {
+      name: 'contact-banner.jpg',
+      data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
+      mimetype: 'image/jpeg',
+      size: 68,
+    },
+  })
+
   payload.logger.info(`— Seeding news...`)
 
-  const [
-    newsCompany,
-    newsIndustry,
-    newsVaccine,
-    newsOrganic,
-    newsPartnership,
-    newsExport,
-    newsIndustryLivestock,
-  ] = await Promise.all([
+  await Promise.all([
     payload.create({
       collection: 'news',
       depth: 0,
@@ -329,35 +342,13 @@ export const seed = async ({
     }),
   ])
 
-  payload.logger.info(`— Seeding contact form...`)
-
-  const contactForm = await payload.create({
-    collection: 'forms',
-    depth: 0,
-    data: contactFormData(),
-  })
-
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage, lienHeNgayPage, gioiThieuPage, baiVietPage, cuaHangPage] = await Promise.all([
+  await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
       data: homeStaticData(),
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: contactPageData({
-        contactForm: contactForm,
-      }),
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: lienHeData({
-        contactForm: contactForm,
-      }),
     }),
     payload.create({
       collection: 'pages',
@@ -374,27 +365,17 @@ export const seed = async ({
       depth: 0,
       data: cuaHangData(),
     }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: lienHeData({
+        contactForm: contactForm,
+        contactBanner: contactBanner,
+      }),
+    }),
   ])
 
-  payload.logger.info(`— Seeding addresses...`)
 
-  const customerUSAddress = await payload.create({
-    collection: 'addresses',
-    depth: 0,
-    data: {
-      customer: customer.id,
-      ...(baseAddressUSData as Address),
-    },
-  })
-
-  const customerUKAddress = await payload.create({
-    collection: 'addresses',
-    depth: 0,
-    data: {
-      customer: customer.id,
-      ...(baseAddressUKData as Address),
-    },
-  })
 
   payload.logger.info(`— Seeding transactions...`)
 
@@ -428,118 +409,7 @@ export const seed = async ({
     },
   })
 
-  let succeededTransactionID: number | string = succeededTransaction.id
 
-  if (payload.db.defaultIDType === 'text') {
-    succeededTransactionID = `"${succeededTransactionID}"`
-  }
-
-  payload.logger.info(`— Seeding carts...`)
-
-  // This cart is open as it's created now
-  const openCart = await payload.create({
-    collection: 'carts',
-    data: {
-      customer: customer.id,
-      currency: 'USD',
-      items: [
-        {
-          product: productVeterinary.id,
-          quantity: 1,
-        },
-      ],
-    },
-  })
-
-  const oldTimestamp = new Date('2023-01-01T00:00:00Z').toISOString()
-
-  // Cart is abandoned because it was created long in the past
-  const abandonedCart = await payload.create({
-    collection: 'carts',
-    data: {
-      currency: 'USD',
-      createdAt: oldTimestamp,
-      items: [
-        {
-          product: productVaccine.id,
-          quantity: 1,
-        },
-      ],
-    },
-  })
-
-  // Cart is purchased because it has a purchasedAt date
-  const completedCart = await payload.create({
-    collection: 'carts',
-    data: {
-      customer: customer.id,
-      currency: 'USD',
-      purchasedAt: new Date().toISOString(),
-      subtotal: 7499,
-      items: [
-        {
-          product: productVeterinary.id,
-          quantity: 1,
-        },
-        {
-          product: productVaccine.id,
-          quantity: 1,
-        },
-      ],
-    },
-  })
-
-  let completedCartID: number | string = completedCart.id
-
-  if (payload.db.defaultIDType === 'text') {
-    completedCartID = `"${completedCartID}"`
-  }
-
-  payload.logger.info(`— Seeding orders...`)
-
-  const orderInCompleted = await payload.create({
-    collection: 'orders',
-    data: {
-      amount: 7499,
-      currency: 'USD',
-      customer: customer.id,
-      shippingAddress: baseAddressUSData,
-      items: [
-        {
-          product: productVeterinary.id,
-          quantity: 1,
-        },
-        {
-          product: productVaccine.id,
-          quantity: 1,
-        },
-      ],
-      status: 'completed',
-      transactions: [succeededTransaction.id],
-    },
-  })
-
-  const orderInProcessing = await payload.create({
-    collection: 'orders',
-    data: {
-      amount: 7499,
-      currency: 'USD',
-      customer: customer.id,
-      shippingAddress: baseAddressUSData,
-      items: [
-        {
-          product: productVeterinary.id,
-          quantity: 1,
-        },
-        {
-          product: productVaccine.id,
-          quantity: 1,
-        },
-      ],
-      status: 'processing',
-      transactions: [succeededTransaction.id],
-    },
-  })
 
   payload.logger.info(`— Seeding globals...`)
 

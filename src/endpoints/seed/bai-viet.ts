@@ -57,8 +57,13 @@ export const baiVietData: (media?: any) => RequiredDataFromCollectionSlug<'pages
       },
     },
     layout: [
-      // NewsGrid is now rendered directly in NewsPage component
-      // This allows for dynamic category filtering and pagination
+      {
+        blockType: 'newsGrid',
+        blockName: 'News Articles',
+        title: 'Bài Viết & Tin Tức',
+        category: 'all',
+        displayCount: 6,
+      },
     ],
     meta: {
       description: 'Đọc các bài viết, tin tức và kiến thức chuyên môn về thú y, chăn nuôi từ Goldvet Việt Nam.',
