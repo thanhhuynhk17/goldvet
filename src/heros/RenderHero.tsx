@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import type { Page } from '@/payload-types'
 
@@ -14,6 +17,7 @@ const heroes = {
 
 export const RenderHero: React.FC<Page['hero']> = (props) => {
   const { type } = props || {}
+  const pathname = usePathname()
 
   if (!type || type === 'none') return null
 
@@ -21,5 +25,7 @@ export const RenderHero: React.FC<Page['hero']> = (props) => {
 
   if (!HeroToRender) return null
 
-  return <HeroToRender {...props} />
+  // Add key prop that changes with pathname to reset animations only on page navigation
+  // This prevents hero refresh when interacting with filters (search params change)
+  return <HeroToRender key={pathname} {...props} />
 }

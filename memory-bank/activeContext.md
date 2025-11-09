@@ -45,6 +45,34 @@
 - ✅ **Store Route Migration**: Created `/cua-hang` as main store page (cloned from `/san-pham`), removed `/san-pham` route
 - ✅ **Navigation Updates**: Updated hero carousel links to point to `/cua-hang` instead of `/san-pham`
 - ✅ **Roboto Font Application**: Added explicit Roboto font support to `/cua-hang` page with `font-sans` class
+- ✅ **Gioi-Thieu Page Architecture**: Created dedicated `/gioi-thieu` route with server-side data fetching
+- ✅ **Server Actions Implementation**: Added `getCachedGioiThieuPage()` for optimized Payload CMS data fetching
+- ✅ **Component Architecture Fix**: Separated server/client components to prevent Next.js runtime errors
+- ✅ **Rendering Consolidation**: Unified hero and layout block rendering in `RenderBlocks` component
+- ✅ **Content Deduplication**: Fixed hero vs AboutPage content duplication in seed data
+- ✅ **TypeScript Types**: Implemented proper types for consolidated rendering system
+- ✅ **Hero Section Admin Integration**: Made hero sections editable through PayloadCMS admin with custom green gradient styling
+- ✅ **AboutPageClient Refactoring**: Replaced hardcoded data with dynamic PayloadCMS data using server actions
+- ✅ **Page Expansion**: Added bai-viet and cua-hang pages with consistent hero content across all pages
+- ✅ **LowImpactHero Component**: Updated with client-side rendering, framer-motion animations, and custom styling
+- ✅ **Server Actions Pattern**: Extended to AboutPageClient for dynamic content fetching
+- ✅ **Seed Script Enhancement**: Added bai-viet and cua-hang page seeding with unified hero content
+- ✅ **News Pagination Configuration**: Manually set news articles per page limit to 4 (reduced from 12 for better UX)
+
+### Client-Side Filtering Implementation (Completed)
+- ✅ **Bai-Viet Client-Side Filtering**: Implemented smooth category filtering without page refreshes using `NewsPageClient` component
+- ✅ **Cua-Hang Client-Side Filtering**: Added instant product filtering with `StorePageClient` component and `getProducts` server action
+- ✅ **URL Synchronization**: Implemented `window.history.pushState()` for SEO-friendly URL updates without navigation
+- ✅ **Browser Navigation Support**: Added `popstate` event handling for back/forward button functionality
+- ✅ **Loading States**: Integrated `useTransition` for smooth user experience during data fetching
+- ✅ **Component Architecture**: Updated `ProductFilters` and `NewsGridPagination` to support both router-based and client-side modes
+- ✅ **Hero Animation Fix**: Fixed Framer Motion hero refresh issue by changing `RenderHero` key from `searchParams.toString()` to `pathname`
+
+### Hero Animation Bug Fixes (Completed)
+- ✅ **Search Params Animation Reset**: Implemented `key={searchParams.toString()}` in RenderHero for component re-mounting on navigation/filter changes
+- ✅ **Immediate Animation Playback**: Changed LowImpactHero from `whileInView` to `animate="visible"` for reliable animation triggering
+- ✅ **Client Component Requirements**: Added `"use client"` directive to RenderHero component to fix Next.js compilation errors
+- ✅ **Memory Bank Updates**: Documented new hero animation patterns and technical fixes
 
 ### Demo User Accounts Created
 - **Admin User**: `demo@payloadcms.com` / `demo` (full admin access)

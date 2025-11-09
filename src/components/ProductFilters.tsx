@@ -10,20 +10,44 @@ interface ProductFiltersProps {
     productType?: string
     searchValue?: string
   }
+  onFilterChange?: (filters: {
+    animalType?: string
+    formulation?: string
+    productType?: string
+    searchValue?: string
+  }) => void
+  isLoading?: boolean
 }
 
-export const ProductFilters: React.FC<ProductFiltersProps> = ({ initialFilters }) => {
+export const ProductFilters: React.FC<ProductFiltersProps> = ({
+  initialFilters,
+  onFilterChange,
+  isLoading = false
+}) => {
   const router = useRouter()
   const [searchInput, setSearchInput] = useState(initialFilters.searchValue || '')
 
   const updateFilters = (key: string, value: string) => {
-    const url = new URL(window.location.href)
-    if (value) {
-      url.searchParams.set(key, value)
+    if (onFilterChange) {
+      // Client-side filtering
+      const newFilters = {
+        ...initialFilters,
+        [key === 'q' ? 'searchValue' : key]: value || undefined
+      }
+      if (key === 'q') {
+        newFilters.searchValue = value || undefined
+      }
+      onFilterChange(newFilters)
     } else {
-      url.searchParams.delete(key)
+      // Legacy router-based filtering
+      const url = new URL(window.location.href)
+      if (value) {
+        url.searchParams.set(key, value)
+      } else {
+        url.searchParams.delete(key)
+      }
+      router.push(url.pathname + url.search)
     }
-    router.push(url.pathname + url.search)
   }
 
   const handleSearch = () => {
@@ -31,7 +55,19 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({ initialFilters }
   }
 
   const clearFilters = () => {
-    router.push('/san-pham')
+    if (onFilterChange) {
+      // Client-side clearing
+      onFilterChange({
+        animalType: undefined,
+        formulation: undefined,
+        productType: undefined,
+        searchValue: undefined
+      })
+      setSearchInput('')
+    } else {
+      // Legacy router clearing
+      router.push('/cua-hang')
+    }
   }
 
   const hasActiveFilters = initialFilters.animalType || initialFilters.formulation || initialFilters.productType || initialFilters.searchValue

@@ -2,6 +2,8 @@
 
 import { motion, Variants } from 'framer-motion';
 import { Award, Target, TrendingUp, Users, Factory, FlaskConical, Leaf, ChevronRight } from 'lucide-react';
+import { useState, useTransition, useEffect } from 'react';
+import { getAboutPageData } from '@/actions/gioi-thieu';
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 60 },
@@ -102,17 +104,48 @@ interface AboutPageClientProps {
 }
 
 export function AboutPageClient({
-  headerTitle = 'Giới thiệu - Goldvet',
-  headerBackgroundColor = 'green',
-  generalIntro,
-  businessAreas,
-  history,
-  achievements,
-  vision,
-  mission,
-  coreValues,
-  partners
+  headerTitle: propHeaderTitle = 'Giới thiệu - Goldvet',
+  headerBackgroundColor: propHeaderBackgroundColor = 'green',
+  generalIntro: propGeneralIntro,
+  businessAreas: propBusinessAreas,
+  history: propHistory,
+  achievements: propAchievements,
+  vision: propVision,
+  mission: propMission,
+  coreValues: propCoreValues,
+  partners: propPartners
 }: AboutPageClientProps) {
+  const [aboutData, setAboutData] = useState<any>(null)
+  const [isPending, startTransition] = useTransition()
+
+  // Fetch data from PayloadCMS on component mount
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      startTransition(async () => {
+        const result = await getAboutPageData()
+        if (result.success) {
+          setAboutData(result.data)
+        } else {
+          console.error('Failed to fetch about page data:', result.error)
+        }
+      })
+    }
+
+    fetchAboutData()
+  }, [])
+
+  // Use fetched data, fallback to props, then to defaults
+  const headerTitle = aboutData?.headerTitle || propHeaderTitle
+  const headerBackgroundColor = aboutData?.headerBackgroundColor || propHeaderBackgroundColor
+  const generalIntro = aboutData?.generalIntro || propGeneralIntro
+  const businessAreas = aboutData?.businessAreas || propBusinessAreas
+  const history = aboutData?.history || propHistory
+  const achievements = aboutData?.achievements || propAchievements
+  const vision = aboutData?.vision || propVision
+  const mission = aboutData?.mission || propMission
+  const coreValues = aboutData?.coreValues || propCoreValues
+  const partners = aboutData?.partners || propPartners
+
   const getHeaderBgClass = () => {
     switch (headerBackgroundColor) {
       case 'blue':
@@ -200,30 +233,6 @@ export function AboutPageClient({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-green-50">
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={fadeInUp}
-        className="relative py-20 px-4 overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-green-800 opacity-95"></div>
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
-
-        <div className="relative max-w-7xl mx-auto text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">{headerTitle}</h1>
-            <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
-              Hơn 50 năm tiên phong trong lĩnh vực dược phẩm thú y, mang đến những giải pháp chăm sóc sức khỏe động vật toàn diện
-            </p>
-          </motion.div>
-        </div>
-      </motion.section>
-
       <motion.section
         initial="hidden"
         whileInView="visible"
@@ -350,50 +359,70 @@ export function AboutPageClient({
             <div className="w-20 h-1 bg-green-600 mx-auto"></div>
           </motion.div>
 
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-green-200 hidden md:block"></div>
+          {/* Classic Alternating Timeline Layout */}
+          <div className="relative max-w-4xl mx-auto">
+            {/* Central Timeline Line */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-green-200 hidden md:block"></div>
 
             <div className="space-y-12">
-              {timeline.map((item, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  className={`flex flex-col md:flex-row gap-8 items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  <div className="flex-1 text-center md:text-right">
-                    {index % 2 === 0 && (
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-100 hover:border-green-300 transition-colors"
-                      >
-                        <h3 className="text-2xl font-bold text-green-700 mb-2">{item.event}</h3>
-                        <p className="text-gray-600">{item.description}</p>
-                      </motion.div>
-                    )}
-                  </div>
+              {timeline.map((item: any, index: number) => {
+                const isEven = index % 2 === 0; // true for 0, 2, 4... (odd items in 1-based counting)
 
+                return (
                   <motion.div
-                    whileHover={{ scale: 1.2 }}
-                    className="relative z-10 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg shadow-lg"
+                    key={index}
+                    variants={fadeInUp}
+                    className={`relative flex items-center ${isEven ? 'justify-start' : 'justify-end'}`}
                   >
-                    {item.year}
-                  </motion.div>
+                    {/* Content and Timeline for alternating sides */}
+                    {isEven ? (
+                      // Odd items: Content left, Timeline right
+                      <>
+                        <div className="w-full md:w-5/12 pr-8 text-right">
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-100 hover:border-green-300 transition-colors"
+                          >
+                            <h3 className="text-xl font-bold text-green-700 mb-2">{item.event}</h3>
+                            <p className="text-gray-600">{item.description}</p>
+                          </motion.div>
+                        </div>
 
-                  <div className="flex-1 text-center md:text-left">
-                    {index % 2 !== 0 && (
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-100 hover:border-green-300 transition-colors"
-                      >
-                        <h3 className="text-2xl font-bold text-green-700 mb-2">{item.event}</h3>
-                        <p className="text-gray-600">{item.description}</p>
-                      </motion.div>
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          className="relative z-10 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg shadow-lg flex-shrink-0"
+                        >
+                          {item.year}
+                        </motion.div>
+
+                        <div className="w-full md:w-5/12 pl-8"></div>
+                      </>
+                    ) : (
+                      // Even items: Timeline left, Content right
+                      <>
+                        <div className="w-full md:w-5/12 pr-8"></div>
+
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          className="relative z-10 bg-green-600 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg shadow-lg flex-shrink-0"
+                        >
+                          {item.year}
+                        </motion.div>
+
+                        <div className="w-full md:w-5/12 pl-8 text-left">
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="bg-white p-6 rounded-xl shadow-lg border-2 border-green-100 hover:border-green-300 transition-colors"
+                          >
+                            <h3 className="text-xl font-bold text-green-700 mb-2">{item.event}</h3>
+                            <p className="text-gray-600">{item.description}</p>
+                          </motion.div>
+                        </div>
+                      </>
                     )}
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -49,11 +49,27 @@
 - **Sonner**: Toast notifications
 - **Embla Carousel**: Touch-friendly carousels
 - **Prism React Renderer**: Syntax highlighting for code blocks
+- **Framer Motion 11.11.17**: Animation library for interactive UI elements
+
+### Hero System Architecture
+- **Admin-Editable Heroes**: Hero sections managed through PayloadCMS admin interface
+- **Rich Text Content**: Title and description extracted from Payload rich text fields
+- **Client-Side Rendering**: Hero components marked with `'use client'` for framer-motion compatibility
+- **Unified Content**: Same hero content shared across `/gioi-thieu`, `/bai-viet`, and `/cua-hang` pages
+- **Custom Styling**: Green gradient backgrounds with image overlays and motion animations
+- **Animation Reset Pattern**: Search params-based component re-mounting for consistent animations
+- **Immediate Animation Playback**: `animate="visible"` instead of `whileInView` for reliable triggering
 
 ### Server Actions (Next.js 13+)
 - **Server Actions**: Direct server-side code execution from client components
 - **Standard Pattern**: All client component data fetching uses Server Actions instead of client-side fetch
 - **Benefits**: Better performance, type safety, cleaner architecture
+
+### Consolidated Rendering System
+- **RenderBlocks Component**: Unified component that handles both hero blocks and layout blocks
+- **Hero Block Detection**: Identifies hero blocks by `type` property vs layout blocks by `blockType` property
+- **Type Safety**: Proper TypeScript types for mixed block rendering
+- **Performance**: Single rendering pass for all page content
 
 ## Development Environment Setup
 
@@ -178,6 +194,24 @@ pnpm start    # Production server
 - Test static generation compatibility
 
 **Priority**: Medium - Performance optimization for production deployment.
+
+### Client Component Requirements
+
+**Issue**: Next.js 15 requires explicit client component marking for components using browser APIs.
+
+**Components Affected**:
+- `src/heros/RenderHero.tsx` - Uses `useSearchParams()` for animation reset
+- All hero components using Framer Motion - Require `'use client'` directive
+
+**Solution Implemented**:
+- Added `'use client'` directive to components using React hooks
+- Ensures proper client-side rendering for interactive components
+- Prevents Next.js compilation errors during development
+
+**Best Practice**: Always mark components with `'use client'` when they use:
+- React hooks (`useState`, `useEffect`, `usePathname`, `useSearchParams`)
+- Browser APIs (`window`, `document`, `localStorage`)
+- Third-party libraries requiring client-side execution (Framer Motion)
 
 ## Development Workflow
 

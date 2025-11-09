@@ -49,3 +49,87 @@ export async function getProductsByCategory(category?: string, limit: number = 1
     }
   }
 }
+
+export async function getProducts({
+  animalType,
+  formulation,
+  productType,
+  searchValue,
+  limit = 12
+}: {
+  animalType?: string
+  formulation?: string
+  productType?: string
+  searchValue?: string
+  limit?: number
+}) {
+  const payload = await getPayload({ config: configPromise })
+
+  const where: any = {
+    _status: {
+      equals: 'published',
+    },
+  }
+
+  // Apply filters
+  if (animalType) {
+    where.animalType = {
+      equals: animalType,
+    }
+  }
+
+  if (formulation) {
+    where.formulation = {
+      equals: formulation,
+    }
+  }
+
+  if (productType) {
+    where.productType = {
+      equals: productType,
+    }
+  }
+
+  if (searchValue) {
+    where.or = [
+      {
+        title: {
+          like: searchValue,
+        },
+      },
+      {
+        description: {
+          like: searchValue,
+        },
+      },
+    ]
+  }
+
+  const products = await payload.find({
+    collection: 'products',
+    draft: false,
+    overrideAccess: false,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      gallery: true,
+      categories: true,
+      priceInUSD: true,
+      animalType: true,
+      formulation: true,
+      productType: true,
+    },
+    where,
+    sort: '-createdAt',
+    limit,
+  })
+
+  return {
+    docs: products.docs,
+    totalDocs: products.totalDocs,
+    totalPages: products.totalPages,
+    page: products.page || 1,
+    hasNextPage: (products.page || 1) < products.totalPages,
+  }
+}

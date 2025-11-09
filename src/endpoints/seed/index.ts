@@ -2,6 +2,7 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest } from 'payloa
 
 import { contactFormData } from './contact-form.js'
 import { contactPageData } from './contact-page.js'
+import { lienHeData } from './lien-he.js'
 import {
   productVeterinaryData,
   productVaccineData,
@@ -21,6 +22,8 @@ import {
 } from './news.js'
 import { homeStaticData } from './home-static.js'
 import { gioiThieuData } from './gioi-thieu.js'
+import { baiVietData } from './bai-viet.js'
+import { cuaHangData } from './cua-hang.js'
 import { Address, Transaction } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
@@ -336,7 +339,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage, gioiThieuPage] = await Promise.all([
+  const [_, contactPage, lienHeNgayPage, gioiThieuPage, baiVietPage, cuaHangPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -352,7 +355,24 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
+      data: lienHeData({
+        contactForm: contactForm,
+      }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
       data: gioiThieuData(),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: baiVietData(placeholderImage),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: cuaHangData(),
     }),
   ])
 
@@ -552,8 +572,8 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'LIÊN HỆ NGAY',
-              url: '/lien-he-ngay',
+              label: 'LIÊN HỆ',
+              url: '/lien-he',
             },
           },
           {
@@ -611,8 +631,8 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'LIÊN HỆ NGAY',
-              url: '/lien-he-ngay',
+              label: 'LIÊN HỆ',
+              url: '/lien-he',
             },
           },
           {

@@ -97,6 +97,6 @@ export const AboutPageBlock: React.FC<AboutPageBlockProps> = async (props) => {
     return <AboutPageClient {...mergedProps} />;
   }
 
-  // Fallback to props if no CMS data
-  return <AboutPageClient {...props} />;
+  // // Fallback to props if no CMS data
+  // return <AboutPageClient {...props} />;
 };

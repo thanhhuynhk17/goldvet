@@ -417,4 +417,476 @@ export function FooterClient({ showBackToTop, copyrightText }: Props) {
 
 **Usage**: **STANDARD APPROACH** for components that need both server-side data fetching and client-side interactivity. Prevents "Event handlers cannot be passed to Client Component props" runtime errors in Next.js 13+ App Router. Server components handle data fetching, client components handle user interactions.
 
+### 10. Consolidated Block Rendering Pattern
+**Pattern**: Unified rendering system that handles both hero blocks and layout blocks in a single component
+```typescript
+// RenderBlocks component handles both hero and layout blocks
+export const RenderBlocks: React.FC<{
+  blocks: (Page['layout'][0] | Page['hero'])[]
+}> = (props) => {
+  const { blocks } = props
+
+  return (
+    <Fragment>
+      {blocks.map((block, index) => {
+        // Check if this is a hero block (has 'type' property)
+        if ('type' in block && block.type && block.type !== 'none' && block.type in heroComponents) {
+          const HeroComponent = heroComponents[block.type as keyof typeof heroComponents]
+          if (HeroComponent) {
+            return <HeroComponent key={index} {...block} />
+          }
+        }
+
+        // Handle regular layout blocks
+        const { blockName, blockType } = block as Page['layout'][0]
+        if (blockType && blockType in blockComponents) {
+          const Block = blockComponents[blockType]
+          if (Block) {
+            return (
+              <div className="my-16" key={index}>
+                <Block id={toKebabCase(blockName!)} {...block} />
+              </div>
+            )
+          }
+        }
+        return null
+      })}
+    </Fragment>
+  )
+}
+
+// Page component combines hero and layout blocks
+export default async function GioiThieuPage() {
+  const page = await getGioiThieuPage()
+  const { hero, layout } = page
+
+  // Combine hero and layout blocks for unified rendering
+  const allBlocks = hero && hero.type !== 'none' ? [hero, ...layout] : layout
+
+  return (
+    <article className="pt-16 pb-24">
+      <RenderBlocks blocks={allBlocks} />
+    </article>
+  )
+}
+```
+
+**Usage**: **STANDARD APPROACH** for page rendering that combines hero sections and layout blocks. Eliminates the need for separate `RenderHero` and `RenderBlocks` components, providing a cleaner and more maintainable architecture. Hero blocks are identified by the presence of a `type` property, while layout blocks use the `blockType` property.
+
+### 11. Dedicated Page Route Pattern
+**Pattern**: Create dedicated routes for important pages instead of relying on dynamic slug routing
+```typescript
+// Dedicated route structure for important pages
+src/app/(app)/
+├── gioi-thieu/          # Dedicated about page
+│   └── page.tsx         # Server component with data fetching
+├── cua-hang/            # Dedicated store page
+│   └── page.tsx         # Server component with data fetching
+├── bai-viet/            # Dedicated news/blog section
+│   ├── page.tsx         # News listing page
+│   └── [slug]/
+│       └── page.tsx     # Individual news article
+└── [slug]/              # Catch-all for other CMS pages
+    └── page.tsx         # Dynamic slug routing fallback
+```
+
+**Usage**: **RECOMMENDED APPROACH** for high-traffic or SEO-critical pages. Dedicated routes provide better performance (static generation), cleaner URLs, and improved SEO compared to dynamic slug routing. Use dynamic slug routing only as a fallback for less critical pages.
+
+### 12. Hero Section Admin Integration Pattern
+**Pattern**: Make hero sections editable through PayloadCMS admin with custom styling and consistent content across pages
+```typescript
+// Hero section with admin-editable rich text content
+export const LowImpactHero: React.FC<LowImpactHeroType> = ({ richText }) => {
+  // Extract title and description from Payload rich text
+  const extractTextContent = (richTextData: any) => {
+    if (!richTextData?.root?.children) return { title: '', description: '' }
+
+    const children = richTextData.root.children
+    let title = ''
+    let description = ''
+
+    // First heading is title, first paragraph is description
+    for (const child of children) {
+      if (child.type === 'heading' && child.children?.[0]?.text && !title) {
+        title = child.children[0].text
+      } else if (child.type === 'paragraph' && child.children?.[0]?.text && !description) {
+        description = child.children[0].text
+      }
+      if (title && description) break
+    }
+
+    return { title, description }
+  }
+
+  const { title, description } = richText ? extractTextContent(richText) : { title: '', description: '' }
+
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={fadeInUp}
+      className="relative py-20 px-4 overflow-hidden"
+    >
+      {/* Custom green gradient background with image overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-green-800 opacity-95"></div>
+      <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
+
+      <div className="relative max-w-7xl mx-auto text-center text-white">
+        <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">{title}</h1>
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">{description}</p>
+        </motion.div>
+      </div>
+    </motion.section>
+  )
+}
+```
+
+**Usage**: **STANDARD APPROACH** for hero sections across the website. Provides consistent branding, admin-editable content, and custom styling. Hero content is managed through PayloadCMS admin interface, allowing non-technical users to update titles and descriptions without code changes.
+
+### 13. Server Actions Extension Pattern
+**Pattern**: Extend Server Actions pattern to client components for dynamic content fetching with proper loading states
+```typescript
+// Server action for AboutPage data fetching
+'use server'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+
+export async function getGioiThieuPage() {
+  const payload = await getPayload({ config: configPromise })
+
+  const page = await payload.find({
+    collection: 'pages',
+    where: { slug: { equals: 'gioi-thieu' } },
+    depth: 2,
+  })
+
+  return page.docs[0] || null
+}
+
+// Client component using server action with loading states
+'use client'
+export function AboutPageClient({ page }: { page: any }) {
+  const [gioiThieuData, setGioiThieuData] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getGioiThieuPage()
+        setGioiThieuData(data)
+      } catch (error) {
+        console.error('Failed to fetch gioi thieu data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      {/* Render dynamic content */}
+      {gioiThieuData && <DynamicContentRenderer data={gioiThieuData} />}
+    </motion.div>
+  )
+}
+```
+
+**Usage**: **EXTENDED APPROACH** for client components that need server-side data fetching. Provides proper loading states, error handling, and smooth animations. Extends the Server Actions pattern to handle dynamic content updates in interactive components.
+
+### 14. Unified Hero Content Pattern
+**Pattern**: Use identical hero content across multiple pages for consistent branding and messaging
+```typescript
+// Seed data with identical hero content for multiple pages
+const heroContent = {
+  type: 'lowImpact',
+  richText: {
+    root: {
+      type: 'root',
+      children: [
+        {
+          type: 'heading',
+          children: [{ type: 'text', text: 'Giới thiệu - Goldvet', version: 1 }],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          tag: 'h1',
+          version: 1,
+        },
+        {
+          type: 'paragraph',
+          children: [{
+            type: 'text',
+            text: 'Hơn 50 năm tiên phong trong lĩnh vực dược phẩm thú y, mang đến những giải pháp chăm sóc sức khỏe động vật toàn diện',
+            version: 1
+          }],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        },
+      ],
+      direction: 'ltr',
+      format: '',
+      indent: 0,
+      version: 1,
+    },
+  },
+}
+
+// Apply same hero to multiple pages
+export const gioiThieuData = () => ({
+  slug: 'gioi-thieu',
+  hero: heroContent,
+  layout: [/* About page blocks */],
+})
+
+export const baiVietData = () => ({
+  slug: 'bai-viet',
+  hero: heroContent, // Same hero content
+  layout: [/* News grid blocks */],
+})
+
+export const cuaHangData = () => ({
+  slug: 'cua-hang',
+  hero: heroContent, // Same hero content
+  layout: [/* Product section blocks */],
+})
+```
+
+**Usage**: **STANDARD APPROACH** for maintaining consistent branding across key pages. Provides unified messaging and visual identity while allowing different page layouts. Hero content can be updated once in the admin panel and will reflect across all pages using this pattern.
+
+### 15. Hero Animation Reset Pattern
+**Pattern**: Force hero component re-mounting on navigation to reset Framer Motion animations
+```typescript
+// RenderHero component with search params-based key for animation reset
+'use client'
+
+import React from 'react'
+import { useSearchParams } from 'next/navigation'
+
+export const RenderHero: React.FC<Page['hero']> = (props) => {
+  const { type } = props || {}
+  const searchParams = useSearchParams()
+
+  if (!type || type === 'none') return null
+
+  const HeroToRender = heroes[type]
+
+  if (!HeroToRender) return null
+
+  // Key changes with search params, forcing re-mount on navigation/filter changes
+  return <HeroToRender key={searchParams.toString()} {...props} />
+}
+```
+
+**Usage**: **CRITICAL FIX** for hero animations during client-side navigation. Forces component re-mounting when search parameters change, ensuring animations reset on page navigation and filter interactions. Solves the issue where `whileInView` animations don't trigger during programmatic navigation.
+
+### 16. Immediate Hero Animation Pattern
+**Pattern**: Use `animate` instead of `whileInView` for immediate animation playback on mount
+```typescript
+// LowImpactHero with immediate animation on mount
+export const LowImpactHero: React.FC<LowImpactHeroType> = ({ richText, media }) => {
+  return (
+    <motion.section
+      initial="hidden"
+      animate="visible"  // ← Triggers immediately on mount
+      variants={fadeInUp}
+      className="relative py-20 px-4 overflow-hidden"
+    >
+      {/* Hero content */}
+    </motion.section>
+  )
+}
+```
+
+**Usage**: **STANDARD APPROACH** for hero animations that must play on every page load. Eliminates dependency on viewport detection (`whileInView`) which fails during client-side navigation. Ensures animations play immediately when components mount, providing consistent user experience across all navigation scenarios.
+
+### 17. Client-Side Filtering Pattern
+**Pattern**: Implement smooth filtering without page refreshes using client-side state management and URL synchronization
+```typescript
+// Client component with local state management
+'use client'
+export function NewsPageClient({ initialArticles, initialCategory, initialPage }) {
+  const [category, setCategory] = useState(initialCategory)
+  const [articles, setArticles] = useState(initialArticles)
+  const [isPending, startTransition] = useTransition()
+
+  // Update URL without causing navigation
+  const updateURL = (newCategory, newPage) => {
+    const url = new URL(window.location.href)
+    if (newCategory !== 'all') {
+      url.searchParams.set('category', newCategory)
+    } else {
+      url.searchParams.delete('category')
+    }
+    if (newPage > 1) {
+      url.searchParams.set('page', newPage.toString())
+    } else {
+      url.searchParams.delete('page')
+    }
+    window.history.pushState({}, '', url.pathname + url.search)
+  }
+
+  // Fetch data with loading states
+  const fetchArticles = (newCategory, newPage) => {
+    startTransition(async () => {
+      const result = await getNews({ category: newCategory, page: newPage })
+      setArticles(result.docs)
+      setCategory(newCategory)
+      updateURL(newCategory, newPage)
+    })
+  }
+
+  // Handle filter changes
+  const handleCategoryChange = (newCategory) => {
+    if (newCategory === category) return
+    fetchArticles(newCategory, 1) // Reset to page 1
+  }
+
+  // Browser navigation support
+  useEffect(() => {
+    const handlePopState = () => {
+      const url = new URL(window.location.href)
+      const urlCategory = url.searchParams.get('category') || 'all'
+      const urlPage = parseInt(url.searchParams.get('page') || '1')
+
+      if (urlCategory !== category || urlPage !== currentPage) {
+        fetchArticles(urlCategory, urlPage)
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [category, currentPage])
+
+  return (
+    <div>
+      {/* Filter buttons with loading states */}
+      <button
+        onClick={() => handleCategoryChange('all')}
+        disabled={isPending}
+        className={cn('px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+          category === 'all' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        )}
+      >
+        Tất cả bài viết
+      </button>
+
+      {/* Content with loading indicators */}
+      {isPending ? (
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+        </div>
+      ) : (
+        <NewsGrid articles={articles} />
+      )}
+    </div>
+  )
+}
+```
+
+**Usage**: **STANDARD APPROACH** for implementing smooth filtering experiences. Eliminates page refreshes, provides loading states, maintains SEO-friendly URLs, and supports browser navigation. Used for both news category filtering and product filtering across the application.
+
+### 18. Dual-Mode Component Pattern
+**Pattern**: Create components that support both router-based (legacy) and client-side filtering modes
+```typescript
+// ProductFilters component supporting both modes
+interface ProductFiltersProps {
+  initialFilters: {
+    animalType?: string
+    formulation?: string
+    productType?: string
+    searchValue?: string
+  }
+  onFilterChange?: (filters: typeof initialFilters) => void  // Client-side mode
+  isLoading?: boolean
+}
+
+export const ProductFilters: React.FC<ProductFiltersProps> = ({
+  initialFilters,
+  onFilterChange,
+  isLoading = false
+}) => {
+  const router = useRouter()
+
+  const updateFilters = (key: string, value: string) => {
+    if (onFilterChange) {
+      // Client-side filtering mode
+      const newFilters = { ...initialFilters }
+      if (key === 'q') {
+        newFilters.searchValue = value || undefined
+      } else {
+        newFilters[key] = value || undefined
+      }
+      onFilterChange(newFilters)
+    } else {
+      // Legacy router-based filtering mode
+      const url = new URL(window.location.href)
+      if (value) {
+        url.searchParams.set(key, value)
+      } else {
+        url.searchParams.delete(key)
+      }
+      router.push(url.pathname + url.search)
+    }
+  }
+
+  return (
+    <div className="mb-8 bg-gray-50 p-6 rounded-lg">
+      {/* Filter controls */}
+      <select
+        value={initialFilters.animalType || ''}
+        onChange={(e) => updateFilters('animalType', e.target.value)}
+        disabled={isLoading}
+      >
+        <option value="">Tất cả</option>
+        <option value="pig">Heo (Pig)</option>
+        <option value="poultry">Gia cầm (Poultry)</option>
+      </select>
+    </div>
+  )
+}
+```
+
+**Usage**: **STANDARD APPROACH** for filter components that need to work in multiple contexts. Supports both immediate client-side filtering (with callbacks) and traditional page-based filtering (with router navigation). Provides backward compatibility while enabling modern user experiences.
+
+### 19. Hero Animation Pathname-Based Reset Pattern
+**Pattern**: Reset hero animations only on actual page navigation, not filter interactions
+```typescript
+// RenderHero with pathname-based key (fixed version)
+'use client'
+export const RenderHero: React.FC<Page['hero']> = (props) => {
+  const { type } = props || {}
+  const pathname = usePathname()  // ← Use pathname instead of searchParams
+
+  if (!type || type === 'none') return null
+
+  const HeroToRender = heroes[type]
+
+  if (!HeroToRender) return null
+
+  // Key changes only with pathname, not search params
+  // Prevents hero refresh when interacting with filters
+  return <HeroToRender key={pathname} {...props} />
+}
+```
+
+**Usage**: **CRITICAL FIX** for hero animation issues during client-side filtering. Ensures hero animations only restart when users navigate to different pages, not when they interact with filters on the same page. Solves the jarring hero refresh problem introduced by client-side filtering implementations.
+
 These patterns provide a solid foundation for maintaining consistency, performance, and developer productivity across the entire Goldvet platform.

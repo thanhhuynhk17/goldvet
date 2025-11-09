@@ -238,6 +238,49 @@
 - ✅ **Day 55**: Verified `/cua-hang` route works correctly (HTTP 200 responses)
 - ✅ **Day 56**: Updated Memory Bank with store route migration and font optimization documentation
 
+### Week 11: Gioi-Thieu Page Architecture & Rendering Consolidation
+- ✅ **Day 57**: Created dedicated `/gioi-thieu` route with server-side data fetching
+- ✅ **Day 58**: Implemented server action `getCachedGioiThieuPage()` for optimized data fetching
+- ✅ **Day 59**: Fixed component architecture - separated server/client components to prevent Next.js runtime errors
+- ✅ **Day 60**: Created `AboutPageClient` component for interactive UI elements (animations, state)
+- ✅ **Day 61**: Consolidated hero rendering into `RenderBlocks` component for unified block handling
+- ✅ **Day 62**: Updated `RenderBlocks` to handle both hero blocks (`type` property) and layout blocks (`blockType` property)
+- ✅ **Day 63**: Fixed content duplication issue by updating seed data with distinct hero vs AboutPage content
+- ✅ **Day 64**: Implemented proper TypeScript types for consolidated rendering system
+- ✅ **Day 65**: Verified gioi-thieu page loads correctly with unified rendering architecture
+- ✅ **Day 66**: Updated Memory Bank with gioi-thieu page architecture and rendering consolidation documentation
+
+### Week 12: Hero Section Admin Integration & Page Expansion
+- ✅ **Day 67**: Made hero sections editable through PayloadCMS admin with custom green gradient styling
+- ✅ **Day 68**: Refactored AboutPageClient to use server actions instead of hardcoded data
+- ✅ **Day 69**: Added bai-viet and cua-hang pages with consistent hero content across all pages
+- ✅ **Day 70**: Updated LowImpactHero component with client-side rendering and framer-motion animations
+- ✅ **Day 71**: Extended server actions pattern to AboutPageClient for dynamic content fetching
+- ✅ **Day 72**: Enhanced seed script with bai-viet and cua-hang page seeding using unified hero content
+- ✅ **Day 73**: Updated Memory Bank with hero admin integration and page expansion documentation
+- ✅ **Day 74**: Manually configured news pagination limit to 4 articles per page (reduced from 12) for improved user experience and better content visibility
+
+### Week 13: Hero Animation Bug Fix
+- ✅ **Day 75**: Fixed hero section animation issue during client-side navigation
+- ✅ **Day 76**: Implemented search params-based component re-mounting in RenderHero component
+- ✅ **Day 77**: Changed LowImpactHero from `whileInView` to `animate="visible"` for immediate animation playback
+- ✅ **Day 78**: Added `"use client"` directive to RenderHero component to fix Next.js compilation errors
+- ✅ **Day 79**: Updated Memory Bank with new hero animation patterns and technical fixes
+
+### Week 14: Client-Side Filtering Implementation
+- ✅ **Day 80**: Implemented client-side filtering for bai-viet (news/articles) page to eliminate page refreshes
+- ✅ **Day 81**: Created `NewsPageClient` component with `useState`, `useTransition`, and URL synchronization
+- ✅ **Day 82**: Updated `NewsGridPagination` component to support client-side pagination with button clicks
+- ✅ **Day 83**: Implemented `window.history.pushState()` for SEO-friendly URL updates without navigation
+- ✅ **Day 84**: Added browser back/forward navigation support with `popstate` event handling
+- ✅ **Day 85**: Extended `getProducts` server action for client-side product fetching with filtering
+- ✅ **Day 86**: Implemented client-side filtering for cua-hang (store) page with `StorePageClient` component
+- ✅ **Day 87**: Updated `ProductFilters` component to support both router-based and client-side filtering modes
+- ✅ **Day 88**: Added loading states with `useTransition` for smooth user experience during data fetching
+- ✅ **Day 89**: Fixed Framer Motion hero section refresh issue by changing key from `searchParams.toString()` to `pathname`
+- ✅ **Day 90**: Ensured hero animations only restart on actual page navigation, not filter interactions
+- ✅ **Day 91**: Updated Memory Bank with client-side filtering architecture and hero animation fixes
+
 ## Risk Assessment
 
 ### High Risk Items
