@@ -17,9 +17,9 @@ export const productVeterinaryData: (args: ProductArgs) => RequiredDataFromColle
 }) => {
   return {
     meta: {
-      title: 'Thuốc Kháng Sinh Cho Heo | Vinatetco',
+      title: 'SIÊU MỌC LÔNG - Goldvet',
       image: metaImage,
-      description: 'Thuốc kháng sinh chất lượng cao dành cho heo, giúp phòng ngừa và điều trị các bệnh nhiễm trùng phổ biến.',
+      description: 'Sản phẩm dinh dưỡng chuyên biệt giúp vật nuôi mọc lông nhanh, khỏe mạnh và tăng trưởng tốt.',
     },
     _status: 'published',
     layout: [],
@@ -34,7 +34,7 @@ export const productVeterinaryData: (args: ProductArgs) => RequiredDataFromColle
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: 'Thuốc kháng sinh chất lượng cao dành cho heo, giúp phòng ngừa và điều trị các bệnh nhiễm trùng phổ biến.',
+                text: 'SIÊU MỌC LÔNG là sản phẩm dinh dưỡng chuyên biệt từ Goldvet, giúp vật nuôi mọc lông nhanh, khỏe mạnh và tăng trưởng tốt. Sản phẩm cung cấp đầy đủ các vitamin, khoáng chất và axit amin cần thiết cho sự phát triển của bộ lông.',
                 type: 'text',
                 version: 1,
               },
@@ -56,13 +56,13 @@ export const productVeterinaryData: (args: ProductArgs) => RequiredDataFromColle
       },
     },
     gallery: [{ image: galleryImage }],
-    title: 'Thuốc Kháng Sinh Cho Heo',
-    slug: 'thuoc-khang-sinh-cho-heo',
+    title: 'SIÊU MỌC LÔNG',
+    slug: 'sieu-moc-long',
     priceInUSDEnabled: true,
-    priceInUSD: 25.99,
+    priceInUSD: 35.99,
     animalType: 'pig',
-    formulation: 'injection',
-    productType: 'medication',
+    formulation: 'powder',
+    productType: 'supplement',
     featured: true,
     relatedProducts: relatedProducts,
   }
@@ -76,9 +76,9 @@ export const productVaccineData: (args: ProductArgs) => RequiredDataFromCollecti
 }) => {
   return {
     meta: {
-      title: 'Vaccine Phòng Bệnh Tai Xanh | Vinatetco',
+      title: 'Thuốc Đặc Trị | Goldvet',
       image: metaImage,
-      description: 'Vaccine phòng bệnh tai xanh cho heo, đảm bảo hiệu quả bảo vệ cao và an toàn.',
+      description: 'Thuốc đặc trị chuyên biệt cho vật nuôi, hiệu quả cao trong điều trị các bệnh phổ biến.',
     },
     _status: 'published',
     layout: [],
@@ -115,8 +115,8 @@ export const productVaccineData: (args: ProductArgs) => RequiredDataFromCollecti
       },
     },
     gallery: [{ image: galleryImage }],
-    title: 'Vaccine Phòng Bệnh Tai Xanh',
-    slug: 'vaccine-phong-benh-tai-xanh',
+    title: 'Thuốc Đặc Trị',
+    slug: 'thuoc-dac-tri',
     priceInUSDEnabled: true,
     priceInUSD: 45.50,
     animalType: 'pig',

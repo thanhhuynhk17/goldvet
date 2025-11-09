@@ -107,7 +107,7 @@ export async function Footer() {
                           title={(cert.name && cert.name !== null) ? cert.name : 'Certification'}
                         />
                       ) : (
-                        <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                        <span className="inline-block px-2 py-1 bg-green-100 text-green-800 rounded">
                           {(cert.name && cert.name !== null) ? cert.name : 'Certification'}
                         </span>
                       )}

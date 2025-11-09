@@ -6,14 +6,14 @@ type NewsArgs = {
   categories: Category[]
 }
 
-export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug<'news'> = ({
+export const newsMycoplasmaData: (args: NewsArgs) => RequiredDataFromCollectionSlug<'news'> = ({
   featuredImage,
   categories,
 }) => {
   return {
-    title: 'Vinatetco Kỷ Niệm 50 Năm Phát Triển',
-    slug: 'vinatetco-ky-niem-50-nam-phat-trien',
-    excerpt: 'Công ty Thuốc Thú Y TW1 (Vinatetco) tự hào kỷ niệm 50 năm cống hiến cho ngành dược thú y Việt Nam.',
+    title: 'Bệnh Mycoplasma suis ở lợn: Nguy cơ tiềm ẩn và giải pháp đặc trị hiệu quả từ Goldvet',
+    slug: 'benh-mycoplasma-suis-o-lon-nguy-co-tiem-an-va-giai-phap-dac-tri-hieu-qua-tu-goldvet',
+    excerpt: 'Bệnh Mycoplasma suis ở lợn là một trong những vấn đề sức khỏe phổ biến trong chăn nuôi heo, gây thiệt hại kinh tế lớn cho người nông dân.',
     content: {
       root: {
         children: [
@@ -24,7 +24,7 @@ export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: 'Sau 50 năm hình thành và phát triển, Vinatetco đã trở thành thương hiệu uy tín hàng đầu trong lĩnh vực dược thú y tại Việt Nam. Với sứ mệnh cung cấp các giải pháp chăm sóc sức khỏe động vật toàn diện, chúng tôi đã đồng hành cùng hàng nghìn hộ nông dân và doanh nghiệp chăn nuôi trên khắp cả nước.',
+                text: 'Bệnh Mycoplasma suis là một bệnh truyền nhiễm phổ biến ở heo, gây ra bởi vi khuẩn Mycoplasma suis. Bệnh có thể lây lan nhanh trong đàn heo và gây ra những hậu quả nghiêm trọng về sức khỏe và kinh tế.',
                 type: 'text',
                 version: 1,
               },
@@ -44,7 +44,7 @@ export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: 'Trong suốt 5 thập kỷ qua, Vinatetco đã đạt được nhiều thành tựu quan trọng:',
+                text: 'Triệu chứng của bệnh:',
                 type: 'text',
                 version: 1,
               },
@@ -64,7 +64,7 @@ export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: '• Xây dựng nhà máy sản xuất đạt chuẩn GMP-WHO',
+                text: '• Heo con bị vàng da, thiếu máu',
                 type: 'text',
                 version: 1,
               },
@@ -84,7 +84,7 @@ export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: '• Phát triển hơn 200 loại sản phẩm dược thú y',
+                text: '• Tỷ lệ chết cao ở heo con (30-70%)',
                 type: 'text',
                 version: 1,
               },
@@ -104,7 +104,27 @@ export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: '• Xuất khẩu sản phẩm sang hơn 30 quốc gia',
+                text: '• Heo nái sẩy thai, sinh non',
+                type: 'text',
+                version: 1,
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            type: 'paragraph',
+            version: 1,
+            textFormat: 0,
+            textStyle: '',
+          },
+          {
+            children: [
+              {
+                detail: 0,
+                format: 0,
+                mode: 'normal',
+                style: '',
+                text: 'Goldvet cung cấp giải pháp đặc trị hiệu quả cho bệnh Mycoplasma suis với các sản phẩm kháng sinh đặc hiệu và vitamin bổ trợ.',
                 type: 'text',
                 version: 1,
               },
@@ -126,8 +146,8 @@ export const newsCompanyData: (args: NewsArgs) => RequiredDataFromCollectionSlug
       },
     },
     featuredImage: featuredImage.id,
-    category: 'company',
-    publishedDate: '2025-11-01T00:00:00.000Z',
+    category: 'industry',
+    publishedDate: '2025-06-02T00:00:00.000Z',
     featured: true,
   }
 }

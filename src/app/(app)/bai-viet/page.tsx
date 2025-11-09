@@ -5,8 +5,8 @@ import Link from 'next/link'
 import React from 'react'
 
 export const metadata = {
-  description: 'Tin tức và sự kiện mới nhất từ Vinavetco và ngành dược thú y.',
-  title: 'Tin Tức & Sự Kiện | Vinavetco',
+  description: 'Bài viết và tin tức mới nhất từ GoldVet và ngành dược thú y.',
+  title: 'Bài Viết & Tin Tức | GoldVet',
 }
 
 type SearchParams = { [key: string]: string | string[] | undefined }
@@ -20,11 +20,11 @@ export default async function TinTucPage({ searchParams }: Props) {
 
   return (
     <div className="min-h-screen pt-20">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+      <div className="bg-gradient-to-r from-green-600 to-green-800 text-white py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Tin Tức & Sự Kiện</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Bài Viết & Tin Tức</h1>
           <p className="text-xl opacity-90 max-w-2xl">
-            Cập nhật những tin tức mới nhất từ Vinavetco và ngành dược thú y Việt Nam
+            Cập nhật những bài viết và tin tức mới nhất từ GoldVet và ngành dược thú y Việt Nam
           </p>
         </div>
       </div>
@@ -33,30 +33,30 @@ export default async function TinTucPage({ searchParams }: Props) {
         {/* Category filter */}
         <div className="mb-8 flex flex-wrap gap-4">
           <Link
-            href="/tin-tuc"
+            href="/bai-viet"
             className={`px-6 py-3 rounded-full font-medium transition-colors ${
               !category
-                ? 'bg-blue-600 text-white'
+                ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            Tất cả tin tức
+            Tất cả bài viết
           </Link>
           <Link
-            href="/tin-tuc?category=company"
+            href="/bai-viet?category=company"
             className={`px-6 py-3 rounded-full font-medium transition-colors ${
               category === 'company'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            Tin Vinavetco
+            Tin GoldVet
           </Link>
           <Link
-            href="/tin-tuc?category=industry"
+            href="/bai-viet?category=industry"
             className={`px-6 py-3 rounded-full font-medium transition-colors ${
               category === 'industry'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >

@@ -6,8 +6,8 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 export const metadata = {
-  description: 'Khám phá danh mục sản phẩm dược thú y của Vinatetco.',
-  title: 'Sản Phẩm | Vinatetco',
+  description: 'Cửa hàng sản phẩm thú y Goldvet - Mua sắm trực tuyến các sản phẩm chất lượng cao cho vật nuôi.',
+  title: 'Cửa Hàng | Goldvet - Thuốc Thú Y',
 }
 
 type SearchParams = { [key: string]: string | string[] | undefined }
@@ -16,7 +16,7 @@ type Props = {
   searchParams: Promise<SearchParams>
 }
 
-export default async function SanPhamPage({ searchParams }: Props) {
+export default async function CuaHangPage({ searchParams }: Props) {
   const { animalType, formulation, productType, q: searchValue } = await searchParams
   const payload = await getPayload({ config: configPromise })
 
@@ -94,11 +94,11 @@ export default async function SanPhamPage({ searchParams }: Props) {
   const resultsText = products.docs.length > 1 ? 'kết quả' : 'kết quả'
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-24">
+    <div className="container mx-auto px-4 py-8 pt-24 font-sans">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">Sản Phẩm</h1>
-        <p className="text-gray-600">
-          Khám phá các sản phẩm dược thú y chất lượng cao của Vinatetco
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-green-700">Cửa Hàng</h1>
+        <p className="text-gray-600 text-lg">
+          Khám phá và mua sắm các sản phẩm thú y chất lượng cao của Goldvet
         </p>
       </div>
 
@@ -123,15 +123,25 @@ export default async function SanPhamPage({ searchParams }: Props) {
           </p>
         ) : (
           <p className="text-gray-600">
-            Hiển thị {products.docs.length} sản phẩm
+            Hiển thị {products.docs.length} sản phẩm trong cửa hàng
           </p>
         )}
       </div>
 
       {!searchValue && !animalType && !formulation && !productType && products.docs?.length === 0 && (
-        <p className="text-center py-12 text-gray-500">
-          Chưa có sản phẩm nào được thêm vào hệ thống.
-        </p>
+        <div className="text-center py-12">
+          <div className="text-gray-400 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <p className="text-gray-500 text-lg">
+            Cửa hàng đang được cập nhật sản phẩm mới.
+          </p>
+          <p className="text-gray-400 text-sm mt-2">
+            Vui lòng quay lại sau hoặc liên hệ hotline để được tư vấn.
+          </p>
+        </div>
       )}
 
       {products?.docs.length > 0 ? (
@@ -141,9 +151,21 @@ export default async function SanPhamPage({ searchParams }: Props) {
           })}
         </Grid>
       ) : (
-        <p className="text-center py-12 text-gray-500">
-          Không tìm thấy sản phẩm nào phù hợp với bộ lọc đã chọn.
-        </p>
+        searchValue || animalType || formulation || productType ? (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <p className="text-gray-500">
+              Không tìm thấy sản phẩm nào phù hợp với bộ lọc đã chọn.
+            </p>
+            <p className="text-gray-400 text-sm mt-2">
+              Hãy thử điều chỉnh bộ lọc hoặc tìm kiếm với từ khóa khác.
+            </p>
+          </div>
+        ) : null
       )}
     </div>
   )

@@ -2,91 +2,99 @@
 
 ## Why This Project Exists
 
-### The Problem
-Small to medium ecommerce businesses face significant challenges when trying to launch or maintain online stores:
+### The Business Context
+**Goldvet** (CÔNG TY TNHH NÔNG NGHIỆP TẬP ĐOÀN GOLDVET) is a Vietnamese veterinary pharmaceutical company specializing in animal health products. The company needed a modern, professional website to showcase their products and establish a strong online presence in the Vietnamese veterinary market.
 
-- **High Development Costs**: Custom ecommerce solutions require extensive development time and expertise
-- **Technical Complexity**: Managing payments, inventory, user accounts, and content simultaneously
-- **Maintenance Burden**: Keeping security patches, dependencies, and features up-to-date
-- **Scalability Concerns**: Growing beyond initial requirements without complete rebuilds
-- **Content Management Gaps**: Non-technical staff unable to update products or content independently
+### The Problem
+Goldvet faced several challenges with their existing online presence:
+- **Outdated Website**: Previous website lacked modern design and functionality
+- **Poor User Experience**: Difficult navigation and product discovery
+- **Limited Content Management**: Non-technical staff couldn't update products or content
+- **No E-commerce Integration**: Missing online ordering and customer management
+- **Mobile Unfriendly**: Poor performance on mobile devices used by farmers
 
 ### The Solution
-Goldvet provides a production-ready, comprehensive ecommerce platform that eliminates these barriers through:
+This project delivers a complete, modern veterinary ecommerce website that addresses all Goldvet's needs:
 
-- **Pre-built Architecture**: Complete, tested ecommerce functionality out-of-the-box
-- **Payload CMS Integration**: Intuitive content management for non-technical users
-- **Modern Tech Stack**: Next.js, TypeScript, and PostgreSQL for reliability and performance
-- **Payment Integration**: Secure Stripe processing with minimal configuration
-- **Extensible Foundation**: Clean architecture allowing easy customization and feature additions
+- **Professional Design**: Modern, responsive website matching veterinary industry standards
+- **Product Showcase**: Dedicated catalog for "SIÊU MỌC LÔNG" and other veterinary products
+- **Content Management**: Payload CMS for easy content updates by Goldvet staff
+- **Vietnamese Optimization**: Localized content and SEO for Vietnamese market
+- **E-commerce Ready**: Stripe payment integration and order management
+- **Mobile-First**: Responsive design for farmers using mobile devices
 
 ## Target Users & Use Cases
 
-### Primary Users: Ecommerce Business Owners
-- **Small Retailers**: Local shops expanding online presence
-- **Product-based Businesses**: Companies selling physical or digital goods
-- **Service Providers**: Businesses needing online booking/payment systems
-- **Entrepreneurs**: Individuals launching new product lines or brands
+### Primary Users: Vietnamese Farmers & Veterinarians
+- **Livestock Farmers**: Pig, poultry, cattle farmers needing veterinary products
+- **Aquaculture Businesses**: Shrimp and fish farming operations
+- **Pet Owners**: Urban customers seeking veterinary products for pets
+- **Veterinary Clinics**: Professional buyers requiring bulk supplies
 
-### Secondary Users: Content Administrators
-- **Store Managers**: Managing inventory, orders, and customer service
-- **Marketing Teams**: Updating product descriptions, images, and promotions
-- **Content Editors**: Creating and managing website pages and content
+### Secondary Users: Goldvet Staff
+- **Sales Team**: Managing product information and customer inquiries
+- **Content Managers**: Updating news, product details, and company information
+- **Administrators**: Managing orders, inventory, and customer data
 
-### End Users: Customers
-- **Online Shoppers**: Seamless browsing and purchasing experience
-- **Returning Customers**: Account management and order history
-- **Guest Users**: Frictionless checkout without account creation
+### End Users: Vietnamese Agricultural Community
+- **Product Research**: Finding appropriate veterinary treatments
+- **Online Ordering**: Convenient purchasing with nationwide delivery
+- **Information Access**: Veterinary news and disease prevention tips
+- **Customer Support**: 24/7 hotline and online consultation
 
 ## User Experience Goals
 
-### For Business Owners
-- **Zero to Launch**: Deploy a complete store within hours, not months
-- **Operational Independence**: Manage all aspects without constant developer intervention
-- **Growth Ready**: Scale from startup to established business without platform changes
-- **Cost Effective**: Reduce development and maintenance costs significantly
+### For Farmers & Customers
+- **Easy Product Discovery**: Intuitive filtering by animal type and formulation
+- **Trust & Credibility**: Professional presentation of Goldvet's expertise
+- **Convenient Ordering**: Simple checkout with multiple payment options
+- **Mobile Accessibility**: Full functionality on smartphones used in rural areas
+- **Local Language**: Complete Vietnamese interface and content
 
-### For Administrators
-- **Intuitive Management**: Clear, logical interfaces for all content and product management
-- **Efficient Workflows**: Streamlined processes for common tasks (adding products, processing orders)
-- **Real-time Insights**: Immediate visibility into store performance and customer behavior
-- **Mobile Friendly**: Admin functionality accessible from any device
+### For Goldvet Staff
+- **Content Independence**: Update products and news without developer help
+- **Customer Insights**: Track orders, popular products, and customer behavior
+- **Efficient Management**: Streamlined order processing and inventory tracking
+- **Marketing Tools**: News publishing and customer communication features
 
-### For Customers
-- **Trust & Security**: Professional appearance and secure payment processing
-- **Performance**: Fast loading, responsive design across all devices
-- **Ease of Use**: Intuitive navigation, clear product information, simple checkout
-- **Personalization**: Account features, order tracking, saved preferences
+### For Business Growth
+- **Market Expansion**: Reach more customers across Vietnam's 63 provinces
+- **Brand Building**: Establish Goldvet as Vietnam's leading veterinary brand
+- **Customer Loyalty**: Account management and order history features
+- **Data-Driven Decisions**: Analytics for product development and marketing
 
 ## Key Value Propositions
 
-### 1. Complete Solution
-Everything needed for ecommerce in one integrated platform - no piecing together separate services.
+### 1. Veterinary Expertise
+Specialized platform understanding veterinary product categorization, animal types, and industry-specific needs.
 
-### 2. Developer Experience
-Clean, modern codebase following best practices, making customization and extension straightforward.
+### 2. Vietnamese Market Focus
+Optimized for Vietnam's agricultural sector with local payment methods, shipping, and language support.
 
-### 3. Business Focus
-Allows business owners to focus on their products and customers rather than technical infrastructure.
+### 3. Complete Business Solution
+From product catalog to order fulfillment - everything Goldvet needs for online success.
 
-### 4. Future-Proof
-Built on established, actively maintained technologies with clear upgrade paths.
+### 4. Scalable Architecture
+Built to grow with Goldvet's business, supporting expansion into new product lines and markets.
 
 ## Success Metrics
 
 ### Business Impact
-- **Time to Launch**: From installation to live store in under 1 day
-- **Operational Efficiency**: 80% reduction in technical maintenance tasks
-- **Customization Speed**: New features implemented in days, not weeks
+- **Online Sales Growth**: 30% increase in product sales through online channels
+- **Customer Reach**: Expand from local to nationwide customer base
+- **Operational Efficiency**: 50% reduction in customer inquiry response time
+- **Brand Recognition**: Establish Goldvet as digital leader in Vietnamese veterinary market
 
 ### User Satisfaction
-- **Admin NPS**: >70 for ease of content management
-- **Customer Conversion**: Industry-standard checkout completion rates
-- **Performance Scores**: >90 Lighthouse performance metrics
+- **Customer Experience**: >90% satisfaction with website usability
+- **Mobile Usage**: >70% of orders placed via mobile devices
+- **Product Discovery**: 80% reduction in time to find appropriate products
+- **Support Quality**: <2 hour response time for customer inquiries
 
 ### Technical Excellence
-- **Uptime**: 99.9%+ availability
-- **Security**: SOC 2 compliant payment processing
-- **Scalability**: Support for 100K+ monthly orders without performance degradation
+- **Performance**: <3 second page load times across Vietnam
+- **Availability**: 99.9% uptime for critical business operations
+- **Security**: SOC 2 compliant payment processing and data protection
+- **SEO Success**: Top 10 rankings for key veterinary product searches
 
-This platform transforms the ecommerce landscape by making professional online stores accessible to businesses of all sizes, while maintaining the flexibility and power that developers need for complex requirements.
+This project transforms Goldvet from a traditional veterinary supplier to a modern, digital-first business, positioning them as Vietnam's most accessible and customer-focused veterinary pharmaceutical company. The website serves as both a sales platform and a trusted resource for Vietnam's agricultural community.

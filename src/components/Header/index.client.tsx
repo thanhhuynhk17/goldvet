@@ -12,7 +12,7 @@ import type { Header } from 'src/payload-types'
 import { LogoIcon } from '@/components/icons/logo'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/utilities/cn'
-import { Search, Languages, Home } from 'lucide-react'
+import { Search, Languages, Home, Store, FileText, Phone, Info, FileCheck } from 'lucide-react'
 
 type Props = {
   header: Header
@@ -38,16 +38,14 @@ export function HeaderClient({ header, homePage }: Props) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Vinatetco navigation menu items with icons
-  const vinatetcoMenu = [
-    { label: 'Trang chủ', url: '/', icon: Home },
-    { label: 'Giới thiệu', url: '/gioi-thieu' },
-    { label: 'Sản phẩm', url: '/san-pham' },
-    { label: 'Tin tức & sự kiện', url: '/tin-tuc' },
-    { label: 'Thông tin kỹ thuật', url: '/thong-tin-ky-thuat' },
-    { label: 'Quan hệ cổ đông', url: '/quan-he-co-dong' },
-    { label: 'Cơ hội nghề nghiệp', url: '/co-hoi-nghe-nghiep' },
-    { label: 'Liên hệ', url: '/lien-he' },
+  // Main navigation menu items with icons
+  const mainNavigation = [
+    { label: 'TRANG CHỦ', url: '/', icon: Home },
+    { label: 'CỬA HÀNG', url: '/cua-hang', icon: Store },
+    { label: 'BÀI VIẾT', url: '/bai-viet', icon: FileText },
+    { label: 'LIÊN HỆ NGAY', url: '/lien-he-ngay', icon: Phone },
+    { label: 'GIỚI THIỆU', url: '/gioi-thieu', icon: Info },
+    { label: 'CHÍNH SÁCH', url: '/chinh-sach', icon: FileCheck },
   ]
 
   return (
@@ -55,8 +53,8 @@ export function HeaderClient({ header, homePage }: Props) {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-white shadow-lg py-2'
-          : 'bg-transparent py-4'
+          ? 'bg-white shadow-lg py-1'
+          : 'bg-transparent py-2'
       )}
     >
       {/* Desktop Layout */}
@@ -87,13 +85,13 @@ export function HeaderClient({ header, homePage }: Props) {
                 'text-lg font-bold transition-colors duration-300',
                 isScrolled ? 'text-gray-800' : 'text-white drop-shadow-lg'
               )}>
-                VINATETCO
+                GOLDVET
               </span>
               <span className={cn(
                 'text-xs font-medium transition-colors duration-300',
                 isScrolled ? 'text-red-600' : 'text-red-400 drop-shadow-md'
               )}>
-                Vì sức khỏe cộng đồng
+                TRAO GIÁ TRỊ THẬT
               </span>
             </div>
           </Link>
@@ -102,13 +100,13 @@ export function HeaderClient({ header, homePage }: Props) {
         {/* Rounded navigation bar - centered */}
         <div className="flex-1 flex justify-center mx-8">
           <div className={cn(
-            'rounded-full px-8 py-3 shadow-xl border transition-all duration-300',
+            'rounded-full px-8 py-3 transition-all duration-300',
             isScrolled
-              ? 'bg-white border-gray-200 shadow-lg'
-              : 'bg-white/95 backdrop-blur-sm border-white/20'
+              ? 'bg-white'
+              : 'bg-white/95 backdrop-blur-sm border border-white/20 shadow-xl'
           )}>
             <ul className="flex items-center gap-6 text-sm font-semibold">
-              {vinatetcoMenu.map((item, index) => {
+              {mainNavigation.map((item, index) => {
                 const IconComponent = item.icon
                 return (
                   <li key={index}>
@@ -185,13 +183,13 @@ export function HeaderClient({ header, homePage }: Props) {
                   'text-sm font-bold transition-colors duration-300',
                   isScrolled ? 'text-gray-800' : 'text-white drop-shadow-lg'
                 )}>
-                  VINATETCO
+                  GOLDVET
                 </span>
                 <span className={cn(
                   'text-xs font-medium transition-colors duration-300',
                   isScrolled ? 'text-red-600' : 'text-red-400 drop-shadow-md'
                 )}>
-                  Vì sức khỏe cộng đồng
+                  TRAO GIÁ TRỊ THẬT
                 </span>
               </div>
             </Link>
@@ -218,7 +216,7 @@ export function HeaderClient({ header, homePage }: Props) {
               </span>
             </button>
             {/* Mobile menu button */}
-            <MobileMenu menu={menu} vinatetcoMenu={vinatetcoMenu} />
+            <MobileMenu menu={menu} mainNavigation={mainNavigation} />
           </div>
         </div>
 

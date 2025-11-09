@@ -11,7 +11,7 @@ import {
   productPetData
 } from './product-veterinary.js'
 import {
-  newsCompanyData,
+  newsMycoplasmaData,
   newsIndustryData,
   newsVaccineData,
   newsOrganicData,
@@ -20,6 +20,7 @@ import {
   newsIndustryLivestockData
 } from './news.js'
 import { homeStaticData } from './home-static.js'
+import { gioiThieuData } from './gioi-thieu.js'
 import { Address, Transaction } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
@@ -250,7 +251,7 @@ export const seed = async ({
       collection: 'news',
       depth: 0,
       data: {
-        ...newsCompanyData({
+        ...newsMycoplasmaData({
           featuredImage: placeholderImage,
           categories: [],
         }),
@@ -335,7 +336,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [_, contactPage, gioiThieuPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -347,6 +348,11 @@ export const seed = async ({
       data: contactPageData({
         contactForm: contactForm,
       }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: gioiThieuData(),
     }),
   ])
 
@@ -525,29 +531,43 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Trang Chủ',
+              label: 'TRANG CHỦ',
               url: '/',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Sản Phẩm',
-              url: '/san-pham',
+              label: 'CỬA HÀNG',
+              url: '/cua-hang',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Tin Tức',
-              url: '/tin-tuc',
+              label: 'BÀI VIẾT',
+              url: '/bai-viet',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Tài Khoản',
-              url: '/account',
+              label: 'LIÊN HỆ NGAY',
+              url: '/lien-he-ngay',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'GIỚI THIỆU',
+              url: '/gioi-thieu',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'CHÍNH SÁCH',
+              url: '/chinh-sach',
             },
           },
         ],
@@ -557,12 +577,12 @@ export const seed = async ({
       slug: 'footer',
       data: {
         companyInfo: {
-          name: 'Goldvet',
-          description: 'Chuyên cung cấp các giải pháp chăm sóc sức khỏe động vật toàn diện cho ngành chăn nuôi Việt Nam.',
+          name: 'CÔNG TY TNHH NÔNG NGHIỆP TẬP ĐOÀN GOLDVET',
+          description: 'Chuyên cung cấp các sản phẩm thú y chính hãng, chất lượng đến tận tay nhà chăn nuôi.',
         },
         contactInfo: {
-          address: '123 Đường ABC, Quận XYZ, TP.HCM, Việt Nam',
-          phone: '(028) 1234 5678',
+          address: 'Số 10, ngõ 90 Nam Dư, Phường Lĩnh Nam, Quận Hoàng Mai, Hà Nội',
+          phone: '0866 399 380',
           email: 'info@goldvet.vn',
           businessHours: 'Thứ 2 - Thứ 6: 8:00 - 17:00\nThứ 7: 8:00 - 12:00\nChủ Nhật: Nghỉ',
         },
@@ -570,36 +590,43 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Trang Chủ',
+              label: 'TRANG CHỦ',
               url: '/',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Sản Phẩm',
-              url: '/san-pham',
+              label: 'CỬA HÀNG',
+              url: '/cua-hang',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Tin Tức',
-              url: '/tin-tuc',
+              label: 'BÀI VIẾT',
+              url: '/bai-viet',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Liên Hệ',
-              url: '/contact',
+              label: 'LIÊN HỆ NGAY',
+              url: '/lien-he-ngay',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Về Chúng Tôi',
-              url: '/about',
+              label: 'GIỚI THIỆU',
+              url: '/gioi-thieu',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'CHÍNH SÁCH',
+              url: '/chinh-sach',
             },
           },
         ],

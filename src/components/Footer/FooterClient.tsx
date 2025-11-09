@@ -21,7 +21,7 @@ export function FooterClient({ showBackToTop, copyrightText }: FooterClientProps
             {showBackToTop && (
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-sm text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
               >
                 ↑ Quay lên đầu trang
               </button>
@@ -30,7 +30,7 @@ export function FooterClient({ showBackToTop, copyrightText }: FooterClientProps
 
           <p className="text-sm">
             <a
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+              className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
               href="https://payloadcms.com"
               target="_blank"
               rel="noopener noreferrer"

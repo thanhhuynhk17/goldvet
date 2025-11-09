@@ -36,7 +36,7 @@ const getSocialColor = (platform: string) => {
     case 'instagram':
       return 'bg-pink-600 hover:bg-pink-700'
     case 'linkedin':
-      return 'bg-blue-700 hover:bg-blue-800'
+      return 'bg-green-700 hover:bg-green-800'
     case 'youtube':
       return 'bg-red-600 hover:bg-red-700'
     case 'twitter':

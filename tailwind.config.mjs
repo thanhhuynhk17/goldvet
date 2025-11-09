@@ -102,8 +102,8 @@ export default {
         },
       }),
       fontFamily: {
-        mono: ['var(--font-geist-mono)'],
-        sans: ['Inter', 'var(--font-geist-sans)', 'system-ui', 'sans-serif'],
+        mono: ['monospace'],
+        sans: ['Roboto', 'system-ui', 'sans-serif'],
       },
       keyframes: {
         fadeIn: {

@@ -18,6 +18,7 @@
 - **shadcn/ui**: Pre-built accessible UI components
 - **Radix UI**: Unstyled, accessible component primitives
 - **Lucide React**: Icon library for consistent UI elements
+- **Roboto Font**: Google Fonts typeface optimized for Vietnamese character support
 
 ### Payments & Commerce
 - **Stripe 18.5.0**: Payment processing and financial operations

@@ -53,9 +53,9 @@ export const AboutSectionBlock: React.FC<AboutSectionBlockProps> = ({
 
           {/* Video Section */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="relative rounded-2xl shadow-2xl overflow-hidden aspect-video bg-gradient-to-br from-green-100 to-blue-100">
+            <div className="relative rounded-2xl shadow-2xl overflow-hidden aspect-video bg-gradient-to-br from-green-100 to-green-100">
               {/* Placeholder for video - using a grass field image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-green-200 via-green-100 to-blue-100">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-200 via-green-100 to-green-100">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-24 h-24 bg-green-600 rounded-full flex items-center justify-center mb-4 shadow-lg">

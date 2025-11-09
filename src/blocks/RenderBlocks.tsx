@@ -1,4 +1,5 @@
 import { AboutSectionBlock } from '@/blocks/AboutSection/Component'
+import { AboutPageBlock } from '@/blocks/AboutPage/Component'
 import { ProductSectionBlock } from '@/blocks/ProductSection/Component'
 import { AchievementsBlock } from '@/blocks/Achievements/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
@@ -13,12 +14,16 @@ import { NewsGridBlock } from '@/blocks/NewsGrid/Component'
 import { ProductShowcaseBlock } from '@/blocks/ProductShowcase/Component'
 import { StatisticsBlock } from '@/blocks/Statistics/Component'
 import { ThreeItemGridBlock } from '@/blocks/ThreeItemGrid/Component'
+import { HighImpactHero } from '@/heros/HighImpact'
+import { LowImpactHero } from '@/heros/LowImpact'
+import { MediumImpactHero } from '@/heros/MediumImpact'
 import { toKebabCase } from '@/utilities/toKebabCase'
 import React, { Fragment } from 'react'
 
 import type { Page } from '../payload-types'
 
 const blockComponents = {
+  aboutPage: AboutPageBlock,
   aboutSection: AboutSectionBlock,
   productSection: ProductSectionBlock,
   achievements: AchievementsBlock,
@@ -36,8 +41,14 @@ const blockComponents = {
   threeItemGrid: ThreeItemGridBlock,
 }
 
+const heroComponents = {
+  highImpact: HighImpactHero,
+  lowImpact: LowImpactHero,
+  mediumImpact: MediumImpactHero,
+}
+
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
+  blocks: (Page['layout'][0] | Page['hero'])[]
 }> = (props) => {
   const { blocks } = props
 
@@ -47,7 +58,16 @@ export const RenderBlocks: React.FC<{
     return (
       <Fragment>
         {blocks.map((block, index) => {
-          const { blockName, blockType } = block
+          // Check if this is a hero block (has 'type' property)
+          if ('type' in block && block.type && block.type !== 'none' && block.type in heroComponents) {
+            const HeroComponent = heroComponents[block.type as keyof typeof heroComponents]
+            if (HeroComponent) {
+              return <HeroComponent key={index} {...block} />
+            }
+          }
+
+          // Handle regular layout blocks
+          const { blockName, blockType } = block as Page['layout'][0]
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType]

@@ -479,6 +479,7 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
+    | AboutPageBlock
     | AboutSectionBlock
     | ProductSectionBlock
     | AchievementsBlock
@@ -511,6 +512,95 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutPageBlock".
+ */
+export interface AboutPageBlock {
+  headerTitle: string;
+  headerBackgroundColor?: ('green' | 'blue' | 'dark') | null;
+  generalIntro: {
+    title: string;
+    description: string;
+    image?: (number | null) | Media;
+  };
+  businessAreas: {
+    title: string;
+    research: {
+      title: string;
+      description: string;
+      image?: (number | null) | Media;
+    };
+    production: {
+      title: string;
+      description: string;
+      image?: (number | null) | Media;
+    };
+    commerce: {
+      title: string;
+      description: string;
+      image?: (number | null) | Media;
+    };
+  };
+  history: {
+    title: string;
+    timelineImage?: (number | null) | Media;
+    milestones?:
+      | {
+          year: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  achievements: {
+    title: string;
+    achievementItems?:
+      | {
+          number: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+    certificationImages?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  vision: {
+    title: string;
+    description: string;
+  };
+  mission: {
+    title: string;
+    description: string;
+  };
+  coreValues: {
+    title: string;
+    values?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  partners: {
+    title: string;
+    partnerLogos?:
+      | {
+          logo: number | Media;
+          name: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutPage';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1395,6 +1485,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        aboutPage?: T | AboutPageBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
         productSection?: T | ProductSectionBlockSelect<T>;
         achievements?: T | AchievementsBlockSelect<T>;
@@ -1423,6 +1514,116 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutPageBlock_select".
+ */
+export interface AboutPageBlockSelect<T extends boolean = true> {
+  headerTitle?: T;
+  headerBackgroundColor?: T;
+  generalIntro?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  businessAreas?:
+    | T
+    | {
+        title?: T;
+        research?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        production?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        commerce?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+      };
+  history?:
+    | T
+    | {
+        title?: T;
+        timelineImage?: T;
+        milestones?:
+          | T
+          | {
+              year?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  achievements?:
+    | T
+    | {
+        title?: T;
+        achievementItems?:
+          | T
+          | {
+              number?: T;
+              label?: T;
+              id?: T;
+            };
+        certificationImages?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  vision?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  mission?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  coreValues?:
+    | T
+    | {
+        title?: T;
+        values?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  partners?:
+    | T
+    | {
+        title?: T;
+        partnerLogos?:
+          | T
+          | {
+              logo?: T;
+              name?: T;
+              id?: T;
+            };
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

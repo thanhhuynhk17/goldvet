@@ -105,7 +105,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({ initialFilters }
             />
             <button
               onClick={handleSearch}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
             >
               Tìm
             </button>
@@ -118,7 +118,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({ initialFilters }
         <div className="mt-4">
           <button
             onClick={clearFilters}
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-green-600 hover:text-green-800 underline"
           >
             Xóa bộ lọc
           </button>

@@ -41,19 +41,19 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
   if (!slug) {
     return {
-      title: 'Vinatetco',
-      description: 'Tin tức từ Vinatetco',
+      title: 'GoldVet',
+      description: 'Bài viết từ GoldVet',
     }
   }
 
   const news = await queryNewsBySlug({ slug })
 
   return {
-    title: news?.title ? `${news.title} | Vinatetco` : 'Vinatetco',
-    description: news?.excerpt || 'Tin tức từ Vinatetco',
+    title: news?.title ? `${news.title} | GoldVet` : 'GoldVet',
+    description: news?.excerpt || 'Bài viết từ GoldVet',
     openGraph: {
-      title: news?.title || 'Vinatetco',
-      description: news?.excerpt || 'Tin tức từ Vinatetco',
+      title: news?.title || 'GoldVet',
+      description: news?.excerpt || 'Bài viết từ GoldVet',
       images: news?.featuredImage && typeof news.featuredImage === 'object' && news.featuredImage.url
         ? [{ url: news.featuredImage.url }]
         : [],
@@ -85,16 +85,16 @@ export default async function NewsPage({ params }: Args) {
   return (
     <article className="min-h-screen">
       {/* Hero section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+      <div className="bg-gradient-to-r from-green-600 to-green-800 text-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl">
             <div className="flex items-center gap-4 mb-4">
               <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
                 news.category === 'company'
-                  ? 'bg-blue-100 text-blue-800'
+                  ? 'bg-green-100 text-green-800'
                   : 'bg-green-100 text-green-800'
               }`}>
-                {news.category === 'company' ? 'Tin Vinatetco' : 'Tin ngành'}
+                {news.category === 'company' ? 'Tin GoldVet' : 'Tin ngành'}
               </span>
               {news.publishedDate && (
                 <time className="text-sm opacity-90">
@@ -131,10 +131,10 @@ export default async function NewsPage({ params }: Args) {
           {/* Back to news link */}
           <div className="mt-12 pt-8 border-t border-gray-200">
             <Link
-              href="/tin-tuc"
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+              href="/bai-viet"
+              className="inline-flex items-center text-green-600 hover:text-green-800 font-medium"
             >
-              ← Quay lại tin tức
+              ← Quay lại bài viết
             </Link>
           </div>
         </div>

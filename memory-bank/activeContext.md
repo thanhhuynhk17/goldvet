@@ -1,21 +1,21 @@
-# Active Context: Vinatetco Veterinary Website Clone
+# Active Context: Goldvet Veterinary Website
 
 ## Current Work Focus
 
-### Primary Focus: Veterinary Website Enhanced ✅
-**Status**: Enhanced Vietnamese veterinary pharmaceutical website with expanded content
-- Complete Payload CMS integration with local API
-- 6 veterinary products with proper categorization seeded
-- Vietnamese news/blog system with 7 articles (expanded from 3)
-- Advanced product filtering by animal type, formulation, product type
-- Enhanced homepage with vinatetco.com-inspired layout (4 hero slides, company story, statistics)
-- Proper Next.js 15 App Router architecture with server/client components
+### Primary Focus: Complete Business Transformation ✅
+**Status**: Successfully transformed from Vinanetco clone to authentic Goldvet veterinary website
+- Complete rebranding from Vinanetco to real Goldvet company
+- Real business information from goldvet.vn integrated
+- Authentic product catalog with "SIÊU MỌC LÔNG" and other Goldvet products
+- Real company news and veterinary disease articles
+- Professional header spacing and layout fixes
+- Production-ready website with 26 static pages
 
 **Immediate Priorities**:
-1. **Content Migration**: Migrate real content from vinatetco.com
-2. **Production Deployment**: Set up live environment
-3. **Performance Testing**: Optimize for Vietnamese users
-4. **SEO Enhancement**: Vietnamese search engine optimization
+1. **Production Deployment**: Set up live environment on Vercel
+2. **Performance Testing**: Optimize for Vietnamese users
+3. **SEO Enhancement**: Vietnamese search engine optimization
+4. **Content Management**: Train Goldvet staff on Payload CMS admin
 
 ## Recent Changes & Current State
 
@@ -38,6 +38,13 @@
 - ✅ **Footer Branding**: Updated footer background to match Achievements section green gradient
 - ✅ **News Publishing**: All seeded news articles now have _status: 'published' for immediate visibility
 - ✅ **Runtime Error Fix**: Resolved Next.js event handler error by separating server/client components
+- ✅ **Header Redesign**: Updated navigation menu to: TRANG CHỦ, CỬA HÀNG, BÀI VIẾT, LIÊN HỆ NGAY, GIỚI THIỆU, CHÍNH SÁCH (all uppercase)
+- ✅ **Header Optimization**: Made header smaller with reduced padding, removed border/shadow on scroll for cleaner appearance
+- ✅ **Font Migration**: Switched from Inter/Geist to Roboto font for better Vietnamese character support
+- ✅ **Font Cleanup**: Removed custom.scss, cleaned up Geist font references, streamlined font configuration
+- ✅ **Store Route Migration**: Created `/cua-hang` as main store page (cloned from `/san-pham`), removed `/san-pham` route
+- ✅ **Navigation Updates**: Updated hero carousel links to point to `/cua-hang` instead of `/san-pham`
+- ✅ **Roboto Font Application**: Added explicit Roboto font support to `/cua-hang` page with `font-sans` class
 
 ### Demo User Accounts Created
 - **Admin User**: `demo@payloadcms.com` / `demo` (full admin access)

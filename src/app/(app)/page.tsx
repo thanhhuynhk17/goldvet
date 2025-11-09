@@ -43,7 +43,7 @@ export default async function HomePage() {
   // Create a page with slug 'home' in the admin panel to manage banner content
 
   return (
-    <article className="relative">
+    <article className="relative -mt-24 md:-mt-20">
       {/* Render blocks without padding - hero will handle full height */}
       <RenderBlocks blocks={page?.layout || []} />
     </article>

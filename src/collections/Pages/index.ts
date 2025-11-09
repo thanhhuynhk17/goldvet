@@ -16,6 +16,7 @@ import { Statistics } from '@/blocks/Statistics/config'
 import { ProductShowcase } from '@/blocks/ProductShowcase/config'
 import { NewsGrid } from '@/blocks/NewsGrid/config'
 import { AboutSection } from '@/blocks/AboutSection/config'
+import { AboutPage } from '@/blocks/AboutPage/config'
 import { ProductSection } from '@/blocks/ProductSection/config'
 import { hero } from '@/fields/hero'
 import { slugField } from 'payload'
@@ -95,6 +96,7 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                AboutPage,
                 AboutSection,
                 ProductSection,
                 Achievements,

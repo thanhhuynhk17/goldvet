@@ -82,10 +82,10 @@ export const NewsGridBlock: React.FC<
                 <div className="flex items-center justify-between mb-3">
                   <span className={`text-xs font-semibold px-2 py-1 rounded ${
                     article.category === 'company'
-                      ? 'bg-blue-100 text-blue-800'
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-green-100 text-green-800'
                   }`}>
-                    {article.category === 'company' ? 'Tin Vinavetco' : 'Tin ngành'}
+                    {article.category === 'company' ? 'Tin GoldVet' : 'Tin ngành'}
                   </span>
                   {article.publishedDate && (
                     <time className="text-sm text-gray-500">
@@ -96,8 +96,8 @@ export const NewsGridBlock: React.FC<
 
                 <h3 className="text-xl font-semibold mb-3 line-clamp-2">
                   <Link
-                    href={`/tin-tuc/${article.slug}`}
-                    className="hover:text-blue-600 transition-colors"
+                    href={`/bai-viet/${article.slug}`}
+                    className="hover:text-green-600 transition-colors"
                   >
                     {article.title}
                   </Link>
@@ -110,8 +110,8 @@ export const NewsGridBlock: React.FC<
                 )}
 
                 <Link
-                  href={`/tin-tuc/${article.slug}`}
-                  className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                  href={`/bai-viet/${article.slug}`}
+                  className="text-green-600 hover:text-green-800 font-medium text-sm"
                 >
                   Đọc thêm →
                 </Link>
@@ -123,10 +123,10 @@ export const NewsGridBlock: React.FC<
         {news.totalDocs > (displayCount || 6) && (
           <div className="text-center mt-12">
             <Link
-              href="/tin-tuc"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
+              href="/bai-viet"
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
             >
-              Xem tất cả tin tức
+              Xem tất cả bài viết
             </Link>
           </div>
         )}
