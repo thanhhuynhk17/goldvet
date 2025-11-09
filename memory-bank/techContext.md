@@ -49,6 +49,11 @@
 - **Embla Carousel**: Touch-friendly carousels
 - **Prism React Renderer**: Syntax highlighting for code blocks
 
+### Server Actions (Next.js 13+)
+- **Server Actions**: Direct server-side code execution from client components
+- **Standard Pattern**: All client component data fetching uses Server Actions instead of client-side fetch
+- **Benefits**: Better performance, type safety, cleaner architecture
+
 ## Development Environment Setup
 
 ### Prerequisites
@@ -141,6 +146,37 @@ pnpm start    # Production server
 - **Data Protection**: GDPR/CCPA compliance for user data
 - **API Security**: Proper authentication and authorization
 - **Environment Secrets**: Secure credential management
+
+## Technical Debt & Known Issues
+
+### Next.js 15 Migration Debt
+
+**Issue**: Multiple pages currently use `export const dynamic = 'force-dynamic'` to work around Next.js 15's `searchParams` Promise requirement.
+
+**Affected Pages**:
+- `src/app/(app)/page.tsx` (homepage)
+- `src/app/(app)/[slug]/page.tsx` (catch-all pages)
+- `src/app/(app)/checkout/page.tsx`
+- `src/app/(app)/forgot-password/page.tsx`
+- `src/app/(app)/logout/page.tsx`
+- `src/app/(app)/shop/page.tsx`
+- `src/app/(app)/tin-tuc/[slug]/page.tsx`
+
+**Impact**:
+- ❌ Prevents static generation for these pages
+- ❌ Reduces performance (no caching benefits)
+- ❌ Impacts SEO (server-side rendering instead of static)
+- ❌ Increases server load and response times
+
+**Root Cause**: Next.js 15 changed `searchParams` from synchronous to asynchronous (Promise), breaking static generation for pages that use it directly or through components.
+
+**Solution Needed**:
+- Wrap `useSearchParams()` calls in `<Suspense>` boundaries
+- Move searchParams logic to client components with proper Suspense
+- Implement proper loading states for dynamic content
+- Test static generation compatibility
+
+**Priority**: Medium - Performance optimization for production deployment.
 
 ## Development Workflow
 

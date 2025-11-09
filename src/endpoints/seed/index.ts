@@ -1,4 +1,4 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest } from 'payload'
 
 import { contactFormData } from './contact-form.js'
 import { contactPageData } from './contact-page.js'
@@ -13,14 +13,14 @@ import {
 import {
   newsCompanyData,
   newsIndustryData,
-  newsVaccineData
+  newsVaccineData,
+  newsOrganicData,
+  newsPartnershipData,
+  newsExportData,
+  newsIndustryLivestockData
 } from './news.js'
-import { homePageData } from './home.js'
-import { imageHatData } from './image-hat.js'
-import { imageTshirtBlackData } from './image-tshirt-black.js'
-import { imageTshirtWhiteData } from './image-tshirt-white.js'
-import { imageHero1Data } from './image-hero-1.js'
-import { Address, Transaction, VariantOption } from '@/payload-types'
+import { homeStaticData } from './home-static.js'
+import { Address, Transaction } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -30,9 +30,6 @@ const collections: CollectionSlug[] = [
   'news',
   'forms',
   'form-submissions',
-  'variants',
-  'variantOptions',
-  'variantTypes',
   'carts',
   'transactions',
   'addresses',
@@ -40,18 +37,6 @@ const collections: CollectionSlug[] = [
 ]
 
 const categories = ['Thuốc Thú Y', 'Vaccine', 'Thức Ăn Chăn Nuôi']
-
-const sizeVariantOptions = [
-  { label: 'Small', value: 'small' },
-  { label: 'Medium', value: 'medium' },
-  { label: 'Large', value: 'large' },
-  { label: 'X Large', value: 'xlarge' },
-]
-
-const colorVariantOptions = [
-  { label: 'Black', value: 'black' },
-  { label: 'White', value: 'white' },
-]
 
 const globals: GlobalSlug[] = ['header', 'footer']
 
@@ -134,30 +119,10 @@ export const seed = async ({
     },
   })
 
-  payload.logger.info(`— Seeding media...`)
-
-  const [imageHatBuffer, imageTshirtBlackBuffer, imageTshirtWhiteBuffer, heroBuffer] =
-    await Promise.all([
-      fetchFileByURL(
-        'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/ecommerce/src/endpoints/seed/hat-logo.png',
-      ),
-      fetchFileByURL(
-        'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/ecommerce/src/endpoints/seed/tshirt-black.png',
-      ),
-      fetchFileByURL(
-        'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/ecommerce/src/endpoints/seed/tshirt-white.png',
-      ),
-      fetchFileByURL(
-        'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
-      ),
-    ])
+  payload.logger.info(`— Seeding customer and categories...`)
 
   const [
     customer,
-    imageHat,
-    imageTshirtBlack,
-    imageTshirtWhite,
-    imageHero,
     thuocThuYCategory,
     vaccineCategory,
     thucAnChanNuoiCategory,
@@ -171,26 +136,6 @@ export const seed = async ({
         roles: ['customer'],
       },
     }),
-    payload.create({
-      collection: 'media',
-      data: imageHatData,
-      file: imageHatBuffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: imageTshirtBlackData,
-      file: imageTshirtBlackBuffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: imageTshirtWhiteData,
-      file: imageTshirtWhiteBuffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: imageHero1Data,
-      file: heroBuffer,
-    }),
     ...categories.map((category) =>
       payload.create({
         collection: 'categories',
@@ -202,50 +147,21 @@ export const seed = async ({
     ),
   ])
 
-  payload.logger.info(`— Seeding variant types and options...`)
-
-  const sizeVariantType = await payload.create({
-    collection: 'variantTypes',
+  // Create placeholder images for veterinary products
+  const placeholderImage = await payload.create({
+    collection: 'media',
     data: {
-      name: 'size',
-      label: 'Size',
+      alt: 'Veterinary Product Placeholder',
+    },
+    file: {
+      name: 'placeholder.png',
+      data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
+      mimetype: 'image/png',
+      size: 68,
     },
   })
 
-  const sizeVariantOptionsResults: VariantOption[] = []
 
-  for (const option of sizeVariantOptions) {
-    const result = await payload.create({
-      collection: 'variantOptions',
-      data: {
-        ...option,
-        variantType: sizeVariantType.id,
-      },
-    })
-    sizeVariantOptionsResults.push(result)
-  }
-
-  const [small, medium, large, xlarge] = sizeVariantOptionsResults
-
-  const colorVariantType = await payload.create({
-    collection: 'variantTypes',
-    data: {
-      name: 'color',
-      label: 'Color',
-    },
-  })
-
-  const [black, white] = await Promise.all(
-    colorVariantOptions.map((option) => {
-      return payload.create({
-        collection: 'variantOptions',
-        data: {
-          ...option,
-          variantType: colorVariantType.id,
-        },
-      })
-    }),
-  )
 
   payload.logger.info(`— Seeding products...`)
 
@@ -261,8 +177,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productVeterinaryData({
-        galleryImage: imageHat,
-        metaImage: imageHat,
+        galleryImage: placeholderImage,
+        metaImage: placeholderImage,
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -271,8 +187,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productVaccineData({
-        galleryImage: imageTshirtBlack,
-        metaImage: imageTshirtBlack,
+        galleryImage: placeholderImage,
+        metaImage: placeholderImage,
         categories: [vaccineCategory],
         relatedProducts: [],
       }),
@@ -281,8 +197,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productSupplementData({
-        galleryImage: imageTshirtWhite,
-        metaImage: imageTshirtWhite,
+        galleryImage: placeholderImage,
+        metaImage: placeholderImage,
         categories: [thucAnChanNuoiCategory],
         relatedProducts: [],
       }),
@@ -291,8 +207,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productParasiticData({
-        galleryImage: imageHat,
-        metaImage: imageHat,
+        galleryImage: placeholderImage,
+        metaImage: placeholderImage,
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -301,8 +217,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productAquacultureData({
-        galleryImage: imageTshirtBlack,
-        metaImage: imageTshirtBlack,
+        galleryImage: placeholderImage,
+        metaImage: placeholderImage,
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -311,8 +227,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productPetData({
-        galleryImage: imageTshirtWhite,
-        metaImage: imageTshirtWhite,
+        galleryImage: placeholderImage,
+        metaImage: placeholderImage,
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -325,30 +241,87 @@ export const seed = async ({
     newsCompany,
     newsIndustry,
     newsVaccine,
+    newsOrganic,
+    newsPartnership,
+    newsExport,
+    newsIndustryLivestock,
   ] = await Promise.all([
     payload.create({
       collection: 'news',
       depth: 0,
-      data: newsCompanyData({
-        featuredImage: imageHero,
-        categories: [],
-      }),
+      data: {
+        ...newsCompanyData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
     }),
     payload.create({
       collection: 'news',
       depth: 0,
-      data: newsIndustryData({
-        featuredImage: imageHat,
-        categories: [],
-      }),
+      data: {
+        ...newsIndustryData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
     }),
     payload.create({
       collection: 'news',
       depth: 0,
-      data: newsVaccineData({
-        featuredImage: imageTshirtBlack,
-        categories: [],
-      }),
+      data: {
+        ...newsVaccineData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
+    }),
+    payload.create({
+      collection: 'news',
+      depth: 0,
+      data: {
+        ...newsOrganicData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
+    }),
+    payload.create({
+      collection: 'news',
+      depth: 0,
+      data: {
+        ...newsPartnershipData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
+    }),
+    payload.create({
+      collection: 'news',
+      depth: 0,
+      data: {
+        ...newsExportData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
+    }),
+    payload.create({
+      collection: 'news',
+      depth: 0,
+      data: {
+        ...newsIndustryLivestockData({
+          featuredImage: placeholderImage,
+          categories: [],
+        }),
+        _status: 'published',
+      },
     }),
   ])
 
@@ -366,10 +339,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: homePageData({
-        contentImage: imageHero,
-        metaImage: imageHat,
-      }),
+      data: homeStaticData(),
     }),
     payload.create({
       collection: 'pages',
@@ -586,19 +556,36 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'footer',
       data: {
+        companyInfo: {
+          name: 'Goldvet',
+          description: 'Chuyên cung cấp các giải pháp chăm sóc sức khỏe động vật toàn diện cho ngành chăn nuôi Việt Nam.',
+        },
+        contactInfo: {
+          address: '123 Đường ABC, Quận XYZ, TP.HCM, Việt Nam',
+          phone: '(028) 1234 5678',
+          email: 'info@goldvet.vn',
+          businessHours: 'Thứ 2 - Thứ 6: 8:00 - 17:00\nThứ 7: 8:00 - 12:00\nChủ Nhật: Nghỉ',
+        },
         navItems: [
           {
             link: {
               type: 'custom',
-              label: 'Quản Trị',
-              url: '/admin',
+              label: 'Trang Chủ',
+              url: '/',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Tìm Đơn Hàng',
-              url: '/find-order',
+              label: 'Sản Phẩm',
+              url: '/san-pham',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Tin Tức',
+              url: '/tin-tuc',
             },
           },
           {
@@ -611,34 +598,40 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Về Vinatetco',
+              label: 'Về Chúng Tôi',
               url: '/about',
             },
           },
         ],
+        socialLinks: [
+          {
+            platform: 'facebook',
+            url: 'https://facebook.com/goldvet.vn',
+            label: 'Theo dõi Goldvet trên Facebook',
+          },
+          {
+            platform: 'youtube',
+            url: 'https://youtube.com/@goldvet.vn',
+            label: 'Xem video trên YouTube',
+          },
+        ],
+        certifications: [
+          {
+            name: 'GMP',
+            url: 'https://goldvet.vn/certifications/gmp',
+          },
+          {
+            name: 'ISO 9001',
+            url: 'https://goldvet.vn/certifications/iso9001',
+          },
+        ],
+        footerSettings: {
+          copyrightText: '© 2025 Goldvet. Tất cả quyền được bảo lưu.',
+          showBackToTop: true,
+        },
       },
     }),
   ])
 
   payload.logger.info('Seeded database successfully!')
-}
-
-async function fetchFileByURL(url: string): Promise<File> {
-  const res = await fetch(url, {
-    credentials: 'include',
-    method: 'GET',
-  })
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch file from ${url}, status: ${res.status}`)
-  }
-
-  const data = await res.arrayBuffer()
-
-  return {
-    name: url.split('/').pop() || `file-${Date.now()}`,
-    data: Buffer.from(data),
-    mimetype: `image/${url.split('.').pop()}`,
-    size: data.byteLength,
-  }
 }

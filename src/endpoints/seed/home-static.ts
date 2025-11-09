@@ -91,8 +91,39 @@ export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () 
               label: 'Khám phá sản phẩm',
               url: '/san-pham'
             }
+          },
+          {
+            title: 'Sản Phẩm Chất Lượng Cao',
+            subtitle: 'Đạt tiêu chuẩn GMP-WHO, đảm bảo an toàn cho vật nuôi',
+            link: {
+              label: 'Xem sản phẩm',
+              url: '/san-pham'
+            }
+          },
+          {
+            title: 'Hệ Thống Phân Phối Toàn Quốc',
+            subtitle: '63 tỉnh thành và các quốc gia trong khu vực',
+            link: {
+              label: 'Liên hệ ngay',
+              url: '/lien-he'
+            }
+          },
+          {
+            title: 'Đồng Hành Cùng Nông Dân Việt Nam',
+            subtitle: 'Hỗ trợ kỹ thuật và tư vấn chuyên môn',
+            link: {
+              label: 'Tư vấn miễn phí',
+              url: '/tu-van'
+            }
           }
         ]
+      },
+      {
+        blockType: 'aboutSection',
+        blockName: 'Company Story',
+        titleLine1: 'Tự hào hơn 50 năm',
+        titleLine2: 'Hành trình Vì sức khỏe cộng đồng',
+        description: 'Công ty Cổ phần Thuốc Thú y TW1 (VINAVETCO) là doanh nghiệp dược thú y lâu đời nhất Việt Nam với hơn 50 năm kinh nghiệm trong ngành. Chúng tôi cam kết cung cấp các sản phẩm chất lượng cao, đạt tiêu chuẩn quốc tế GMP-WHO, góp phần bảo vệ sức khỏe vật nuôi và phát triển ngành chăn nuôi bền vững.'
       },
       {
         blockType: 'achievements',
@@ -121,6 +152,32 @@ export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () 
             icon: 'shield',
             title: '1.000.000+ khách hàng',
             description: 'Tin tưởng sử dụng sản phẩm'
+          }
+        ]
+      },
+      {
+        blockType: 'statistics',
+        blockName: 'Company Statistics',
+        stats: [
+          {
+            number: '50+',
+            label: 'Năm',
+            description: 'Kinh nghiệm ngành'
+          },
+          {
+            number: '600+',
+            label: 'Sản phẩm',
+            description: 'Dược thú y'
+          },
+          {
+            number: '63',
+            label: 'Tỉnh thành',
+            description: 'Phân phối'
+          },
+          {
+            number: '1M+',
+            label: 'Khách hàng',
+            description: 'Tin tưởng'
           }
         ]
       },

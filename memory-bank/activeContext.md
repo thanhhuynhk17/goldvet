@@ -2,14 +2,14 @@
 
 ## Current Work Focus
 
-### Primary Focus: Veterinary Website Implementation Complete ✅
-**Status**: Full Vietnamese veterinary pharmaceutical website operational
+### Primary Focus: Veterinary Website Enhanced ✅
+**Status**: Enhanced Vietnamese veterinary pharmaceutical website with expanded content
 - Complete Payload CMS integration with local API
 - 6 veterinary products with proper categorization seeded
-- Vietnamese news/blog system with 3 articles
+- Vietnamese news/blog system with 7 articles (expanded from 3)
 - Advanced product filtering by animal type, formulation, product type
-- Homepage with hero carousel, statistics, featured products, and news grid
-- Proper Next.js 13+ App Router architecture with server/client components
+- Enhanced homepage with vinatetco.com-inspired layout (4 hero slides, company story, statistics)
+- Proper Next.js 15 App Router architecture with server/client components
 
 **Immediate Priorities**:
 1. **Content Migration**: Migrate real content from vinatetco.com
@@ -22,13 +22,22 @@
 ### Veterinary Website Implementation (Completed)
 - ✅ **Extended Product Schema**: Added veterinary fields (animalType, formulation, productType, featured)
 - ✅ **News Collection**: Created Vietnamese blog/news system with categories and versioning support
-- ✅ **Custom Blocks**: HeroCarousel, Statistics, ProductShowcase, NewsGrid components
+- ✅ **Custom Blocks**: HeroCarousel, Statistics, ProductShowcase, NewsGrid, AboutSection, ProductSection components
 - ✅ **Vietnamese Homepage**: Hero carousel, company statistics, featured products, news grid
 - ✅ **Advanced Filtering**: Product filtering by animal type, formulation, and product type
 - ✅ **Server/Client Architecture**: Proper Next.js 13+ component separation
-- ✅ **Sample Content**: 6 veterinary products + 3 news articles seeded
+- ✅ **Sample Content**: 6 veterinary products + 7 news articles seeded (expanded from 3)
+- ✅ **Homepage Enhancement**: Updated layout to match vinatetco.com with 4 hero slides, company story section, and statistics block
+- ✅ **Seeding Configuration**: Switched from home.ts to home-static.ts for proper vinatetco.com layout seeding
 - ✅ **Vietnamese UI**: Complete localization and navigation
 - ✅ **Access Control Fix**: Resolved 403 Forbidden error by adding public read access and versioning to News collection
+- ✅ **Server Actions**: Refactored ProductSection to use Server Actions instead of client-side fetch
+- ✅ **Server Actions Pattern**: Established as standard for all client component data fetching
+- ✅ **Auto-scroll Carousel**: ProductSection with auto-scroll, hover navigation, and category filtering
+- ✅ **Footer Enhancement**: Comprehensive footer with company info, contact details, social media, and certifications
+- ✅ **Footer Branding**: Updated footer background to match Achievements section green gradient
+- ✅ **News Publishing**: All seeded news articles now have _status: 'published' for immediate visibility
+- ✅ **Runtime Error Fix**: Resolved Next.js event handler error by separating server/client components
 
 ### Demo User Accounts Created
 - **Admin User**: `demo@payloadcms.com` / `demo` (full admin access)
@@ -42,6 +51,7 @@
 - ✅ **Homepage Layout**: Hero carousel, statistics, featured products, news grid
 - ✅ **Responsive Design**: Mobile-friendly veterinary website
 - ✅ **Payload Local API**: Proper server-side data fetching with type safety
+- ✅ **Fixed React Key Error**: Resolved "admin-admin" duplicate key issue in Users collection
 
 ## Active Decisions & Considerations
 
@@ -50,6 +60,7 @@
 2. **Payment Provider**: Stripe integration configured (needs API keys)
 3. **Deployment Target**: Vercel recommended for Next.js hosting
 4. **Component Library**: shadcn/ui + Radix UI for consistent UI
+5. **Data Fetching Standard**: Server Actions for all client component data fetching (replaces client-side fetch)
 
 ### Open Questions Requiring Decisions
 1. **Business Model**: What specific products/services will be sold?

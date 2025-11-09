@@ -38,21 +38,37 @@ export const Users: CollectionConfig = {
         read: adminOnlyFieldAccess,
         update: adminOnlyFieldAccess,
       },
-      defaultValue: ['customer'],
       hasMany: true,
       hooks: {
-        beforeChange: [ensureFirstUserIsAdmin],
+        beforeChange: [
+          // Set default customer role for new users
+          ({ value, operation }) => {
+            if (operation === 'create' && (!value || value.length === 0)) {
+              return ['customer']
+            }
+            return value
+          },
+          ensureFirstUserIsAdmin,
+          // Ensure no duplicate roles
+          ({ value }) => {
+            if (Array.isArray(value)) {
+              return [...new Set(value)]
+            }
+            return value
+          }
+        ],
       },
       options: [
         {
-          label: 'admin',
+          label: 'Admin',
           value: 'admin',
         },
         {
-          label: 'customer',
+          label: 'Customer',
           value: 'customer',
         },
       ],
+      required: true,
     },
     {
       name: 'orders',

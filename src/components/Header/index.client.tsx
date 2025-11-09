@@ -4,6 +4,7 @@ import { Cart } from '@/components/Cart'
 import { OpenCartButton } from '@/components/Cart/OpenCart'
 import Link from 'next/link'
 import React, { Suspense, useEffect, useState } from 'react'
+import Image from 'next/image'
 
 import { MobileMenu } from './MobileMenu'
 import type { Header } from 'src/payload-types'
@@ -15,12 +16,16 @@ import { Search, Languages, Home } from 'lucide-react'
 
 type Props = {
   header: Header
+  homePage?: any
 }
 
-export function HeaderClient({ header }: Props) {
+export function HeaderClient({ header, homePage }: Props) {
   const menu = header.navItems || []
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
+
+  // Get logo from home page meta field
+  const logoImage = homePage?.meta?.image
 
   // Scroll detection
   useEffect(() => {
@@ -59,13 +64,24 @@ export function HeaderClient({ header }: Props) {
         {/* Logo section - outside rounded container */}
         <div className="flex items-center gap-4 z-10">
           <Link className="flex items-center gap-2" href="/">
-            <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-300">
-              <div className="w-6 h-6 border-2 border-white rounded-sm relative">
-                <div className="absolute inset-1 bg-white rounded-sm"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-0.5 bg-red-600"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-3 bg-red-600"></div>
+            {logoImage && typeof logoImage === 'object' && logoImage.url ? (
+              <Image
+                src={`${process.env.NEXT_PUBLIC_SERVER_URL || ''}${logoImage.url}`}
+                alt={logoImage.alt || 'Company Logo'}
+                width={40}
+                height={40}
+                className="rounded-full shadow-lg object-cover transition-all duration-300"
+              />
+            ) : (
+              // Fallback to current design if no logo
+              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-300">
+                <div className="w-6 h-6 border-2 border-white rounded-sm relative">
+                  <div className="absolute inset-1 bg-white rounded-sm"></div>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-0.5 bg-red-600"></div>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-3 bg-red-600"></div>
+                </div>
               </div>
-            </div>
+            )}
             <div className="flex flex-col">
               <span className={cn(
                 'text-lg font-bold transition-colors duration-300',
@@ -146,13 +162,24 @@ export function HeaderClient({ header }: Props) {
           {/* Mobile Logo */}
           <div className="flex items-center gap-2">
             <Link className="flex items-center gap-2" href="/">
-              <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                <div className="w-4 h-4 border-2 border-white rounded-sm relative">
-                  <div className="absolute inset-0.5 bg-white rounded-sm"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-0.5 bg-red-600"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-2 bg-red-600"></div>
+              {logoImage && typeof logoImage === 'object' && logoImage.url ? (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_SERVER_URL || ''}${logoImage.url}`}
+                  alt={logoImage.alt || 'Company Logo'}
+                  width={32}
+                  height={32}
+                  className="rounded-full shadow-lg object-cover transition-all duration-300"
+                />
+              ) : (
+                // Fallback mobile design
+                <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-4 h-4 border-2 border-white rounded-sm relative">
+                    <div className="absolute inset-0.5 bg-white rounded-sm"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-0.5 bg-red-600"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-2 bg-red-600"></div>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="flex flex-col">
                 <span className={cn(
                   'text-sm font-bold transition-colors duration-300',

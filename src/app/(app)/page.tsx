@@ -6,9 +6,10 @@ import { draftMode } from 'next/headers'
 import { homeStaticData } from '@/endpoints/seed/home-static'
 import React from 'react'
 import type { Metadata } from 'next'
-import { SocialMediaButtons } from '@/components/SocialMediaButtons'
 
 import type { Page } from '@/payload-types'
+
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const { isEnabled: draft } = await draftMode()
@@ -45,7 +46,6 @@ export default async function HomePage() {
     <article className="relative">
       {/* Render blocks without padding - hero will handle full height */}
       <RenderBlocks blocks={page?.layout || []} />
-      <SocialMediaButtons />
     </article>
   )
 }

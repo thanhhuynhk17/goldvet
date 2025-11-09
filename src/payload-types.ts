@@ -187,7 +187,7 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name?: string | null;
-  roles?: ('admin' | 'customer')[] | null;
+  roles: ('admin' | 'customer')[];
   orders?: {
     docs?: (number | Order)[];
     hasNextPage?: boolean;
@@ -2123,6 +2123,17 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  companyInfo?: {
+    name?: string | null;
+    description?: string | null;
+    logo?: (number | null) | Media;
+  };
+  contactInfo?: {
+    address?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    businessHours?: string | null;
+  };
   navItems?:
     | {
         link: {
@@ -2138,6 +2149,26 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'instagram' | 'linkedin' | 'youtube' | 'twitter';
+        url: string;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  certifications?:
+    | {
+        name: string;
+        logo?: (number | null) | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerSettings?: {
+    copyrightText?: string | null;
+    showBackToTop?: boolean | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2169,6 +2200,21 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  companyInfo?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        logo?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        address?: T;
+        phone?: T;
+        email?: T;
+        businessHours?: T;
+      };
   navItems?:
     | T
     | {
@@ -2182,6 +2228,28 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  certifications?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        url?: T;
+        id?: T;
+      };
+  footerSettings?:
+    | T
+    | {
+        copyrightText?: T;
+        showBackToTop?: T;
       };
   updatedAt?: T;
   createdAt?: T;

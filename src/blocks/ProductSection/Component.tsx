@@ -4,7 +4,8 @@ import { cn } from '@/utilities/cn'
 import { ProductGridItem } from '@/components/ProductGridItem'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import AutoScroll from 'embla-carousel-auto-scroll'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useTransition } from 'react'
+import { getProductsByCategory } from '@/actions/products'
 
 interface ProductSectionBlockProps {
   title?: string
@@ -59,44 +60,26 @@ export const ProductSectionBlock: React.FC<ProductSectionBlockProps> = ({
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('all')
   const [products, setProducts] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [isPending, startTransition] = useTransition()
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        setLoading(true)
+      startTransition(async () => {
+        const categorySlug = activeCategory !== 'all'
+          ? categories.find(cat => cat.id === activeCategory)?.slug
+          : undefined
 
-        // Create query parameters for API call
-        const params = new URLSearchParams()
-        params.append('limit', Math.max(displayCount || 8, 12).toString()) // Ensure at least 12 products for smooth scrolling
-        params.append('status', 'published')
+        const result = await getProductsByCategory(categorySlug, Math.max(displayCount || 8, 12))
 
-        if (activeCategory !== 'all') {
-          const categorySlug = categories.find(cat => cat.id === activeCategory)?.slug
-          if (categorySlug) {
-            params.append('category', categorySlug)
-          }
-        }
-
-        const response = await fetch(`/api/products?${params.toString()}`)
-        if (response.ok) {
-          const data = await response.json()
-          const fetchedProducts = data.docs || []
-
+        if (result.success) {
           // Duplicate products to create smooth scrolling effect (like existing Carousel component)
-          const duplicatedProducts = [...fetchedProducts, ...fetchedProducts, ...fetchedProducts]
-
+          const duplicatedProducts = [...result.data, ...result.data, ...result.data]
           setProducts(duplicatedProducts)
         } else {
-          console.error('Failed to fetch products')
+          console.error('Failed to fetch products:', result.error)
           setProducts([])
         }
-      } catch (error) {
-        console.error('Error fetching products:', error)
-        setProducts([])
-      } finally {
-        setLoading(false)
-      }
+      })
     }
 
     fetchProducts()
@@ -147,7 +130,7 @@ export const ProductSectionBlock: React.FC<ProductSectionBlockProps> = ({
         </div>
 
         {/* Products Carousel */}
-        {loading ? (
+        {isPending ? (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
           </div>
@@ -170,9 +153,9 @@ export const ProductSectionBlock: React.FC<ProductSectionBlockProps> = ({
                 ]}
               >
                 <CarouselContent className="-ml-2 md:-ml-4">
-                  {products.map((product) => (
+                  {products.map((product, index) => (
                     <CarouselItem
-                      key={product.id}
+                      key={`${product.id}-${index}`}
                       className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                     >
                       <div className="p-1">

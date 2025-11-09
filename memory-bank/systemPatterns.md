@@ -153,6 +153,72 @@ export function ContactForm() {
 
 **Usage**: Consistent form handling across the application with validation and error management.
 
+### 6. Auto-scroll Carousel Pattern
+**Pattern**: Embla Carousel with auto-scroll plugin and hover navigation
+```typescript
+// Auto-scroll carousel with hover controls
+<Carousel
+  opts={{ align: 'start', loop: true }}
+  plugins={[
+    AutoScroll({
+      playOnInit: true,
+      speed: 1,
+      stopOnInteraction: true,
+      stopOnMouseEnter: true,
+    }),
+  ]}
+>
+  {/* Carousel content */}
+</Carousel>
+
+// Hidden navigation arrows that appear on hover
+<div className="group">
+  <CarouselPrevious className="opacity-0 group-hover:opacity-100" />
+  <CarouselNext className="opacity-0 group-hover:opacity-100" />
+</div>
+```
+
+**Usage**: Product carousels with smooth auto-scroll and intuitive hover controls.
+
+### 7. Server Actions Pattern
+**Pattern**: Next.js Server Actions for client component data fetching
+```typescript
+// Server action in src/actions/products.ts
+'use server'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+
+export async function getProductsByCategory(category?: string, limit: number = 12) {
+  const payload = await getPayload({ config: configPromise })
+  const result = await payload.find({
+    collection: 'products',
+    where: { _status: { equals: 'published' } },
+    limit
+  })
+  return { success: true, data: result.docs }
+}
+
+// Client component using server action
+'use client'
+export function ProductSection() {
+  const [products, setProducts] = useState([])
+  const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    startTransition(async () => {
+      const result = await getProductsByCategory(activeCategory)
+      if (result.success) {
+        setProducts(result.data)
+      }
+    })
+  }, [activeCategory])
+
+  return isPending ? <Spinner /> : <ProductCarousel products={products} />
+}
+```
+
+**Usage**: **STANDARD APPROACH** for all client component data fetching. Server Actions provide better performance, type safety, and cleaner architecture than client-side fetch calls.
+
 ## Component Relationships
 
 ### Core Component Hierarchy
@@ -277,5 +343,78 @@ try {
 - Next.js ISR for static content
 - Payload's built-in caching for API responses
 - CDN integration for media assets
+
+### 8. User Roles Field Pattern
+**Pattern**: Multi-select roles field with deduplication and proper defaults
+```typescript
+// Users collection roles field configuration
+{
+  name: 'roles',
+  type: 'select',
+  hasMany: true,
+  required: true,
+  hooks: {
+    beforeChange: [
+      // Set default customer role for new users
+      ({ value, operation }) => {
+        if (operation === 'create' && (!value || value.length === 0)) {
+          return ['customer']
+        }
+        return value
+      },
+      ensureFirstUserIsAdmin,
+      // Ensure no duplicate roles (prevents React key errors)
+      ({ value }) => {
+        if (Array.isArray(value)) {
+          return [...new Set(value)]
+        }
+        return value
+      }
+    ],
+  },
+  options: [
+    { label: 'Admin', value: 'admin' },
+    { label: 'Customer', value: 'customer' },
+  ],
+}
+```
+
+**Usage**: Prevents duplicate role values that cause "admin-admin" React key errors in the admin panel. Ensures clean data integrity for user role management.
+
+### 9. Server/Client Component Separation Pattern
+**Pattern**: Separate server components (data fetching) from client components (interactivity) to avoid Next.js runtime errors
+```typescript
+// Server Component - handles data fetching
+export async function Footer() {
+  const footer = await getCachedGlobal('footer', 1)() // Server-side data fetching
+
+  return (
+    <footer>
+      {/* Static content */}
+      <FooterClient
+        showBackToTop={footer.footerSettings?.showBackToTop}
+        copyrightText={footer.footerSettings?.copyrightText}
+      />
+    </footer>
+  )
+}
+
+// Client Component - handles interactivity
+'use client'
+export function FooterClient({ showBackToTop, copyrightText }: Props) {
+  return (
+    <div>
+      {showBackToTop && (
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          ↑ Back to top
+        </button>
+      )}
+      <p>{copyrightText}</p>
+    </div>
+  )
+}
+```
+
+**Usage**: **STANDARD APPROACH** for components that need both server-side data fetching and client-side interactivity. Prevents "Event handlers cannot be passed to Client Component props" runtime errors in Next.js 13+ App Router. Server components handle data fetching, client components handle user interactions.
 
 These patterns provide a solid foundation for maintaining consistency, performance, and developer productivity across the entire Goldvet platform.

@@ -1,50 +1,73 @@
 'use client'
 import React from 'react'
-import { Facebook, Youtube } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Youtube, Twitter } from 'lucide-react'
 
-export const SocialMediaButtons: React.FC = () => {
-  const socialLinks = [
-    {
-      name: 'Facebook',
-      icon: Facebook,
-      url: 'https://facebook.com/vinatetcovn',
-      color: 'bg-blue-600 hover:bg-blue-700',
-      shadowColor: 'shadow-blue-500/50'
-    },
-    {
-      name: 'Zalo',
-      icon: ({ className }: { className?: string }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16c-.169 3.828-3.285 6.872-7.092 6.872-1.322 0-2.555-.355-3.616-1.015-.247-.152-.449-.376-.582-.64-.133-.264-.19-.565-.164-.866.026-.301.135-.586.312-.821.177-.235.406-.415.663-.522.257-.107.53-.136.796-.085.266.051.517.17.728.344.211.174.375.396.477.647.102.251.138.524.105.795-.033.271-.147.53-.33.752-.183.222-.42.4-.689.52-.269.12-.558.178-.846.17-.288-.008-.572-.08-.832-.21-.26-.13-.492-.318-.678-.552-.186-.234-.32-.509-.39-.807-.07-.298-.07-.612.001-.91.07-.298.21-.578.41-.818.2-.24.445-.44.714-.582.269-.142.56-.222.857-.235.297-.013.59.034.864.135.274.101.526.26.74.467.214.207.39.45.516.714.126.264.21.545.245.835.035.29.02.583-.044.87-.064.287-.19.56-.37.804-.18.244-.406.456-.665.626-.259.17-.54.295-.833.37-.293.075-.6.096-.903.06-.303-.036-.597-.13-.873-.276-.276-.146-.526-.346-.73-.59-.204-.244-.37-.53-.486-.84-.116-.31-.18-.64-.185-.975-.005-.335.07-.665.22-.975.15-.31.37-.59.67-.82.3-.23.65-.4 1.02-.5.37-.1.76-.13 1.14-.09.38.04.74.15 1.07.32.33.17.62.4.85.69.23.29.4.63.5.98.1.35.13.72.09 1.08-.04.36-.15.71-.32 1.03-.17.32-.39.61-.64.85-.25.24-.55.43-.87.56-.32.13-.66.2-1.01.2-.35 0-.69-.07-1.01-.2-.32-.13-.61-.32-.86-.56-.25-.24-.45-.53-.59-.84-.14-.31-.22-.65-.22-1 0-.35.08-.69.22-1 .14-.31.34-.6.59-.84.25-.24.54-.43.86-.56.32-.13.66-.2 1.01-.2.35 0 .69.07 1.01.2.32.13.61.32.86.56.25.24.45.53.59.84.14.31.22.65.22 1 0 .35-.08.69-.22 1-.14.31-.34.6-.59.84-.25.24-.54.43-.86.56-.32.13-.66.2-1.01.2-.35 0-.69-.07-1.01-.2-.32-.13-.61-.32-.86-.56-.25-.24-.45-.53-.59-.84-.14-.31-.22-.65-.22-1 0-.35.08-.69.22-1 .14-.31.34-.6.59-.84.25-.24.54-.43.86-.56.32-.13.66-.2 1.01-.2.35 0 .69.07 1.01.2.32.13.61.32.86.56.25.24.45.53.59.84.14.31.22.65.22 1 0 .35-.08.69-.22 1-.14.31-.34.6-.59.84-.25.24-.54.43-.86.56-.32.13-.66.2-1.01.2-.35 0-.69-.07-1.01-.2-.32-.13-.61-.32-.86-.56-.25-.24-.45-.53-.59-.84-.14-.31-.22-.65-.22-1 0-.35.08-.69.22-1 .14-.31.34-.6.59-.84.25-.24.54-.43.86-.56.32-.13.66-.2 1.01-.2.35 0 .69.07 1.01.2.32.13.61.32.86.56.25.24.45.53.59.84.14.31.22.65.22 1 0 .35-.08.69-.22 1-.14.31-.34.6-.59.84-.25.24-.54.43-.86.56-.32.13-.66.2-1.01.2z"/>
-        </svg>
-      ),
-      url: 'https://zalo.me/vinatetcovn',
-      color: 'bg-blue-500 hover:bg-blue-600',
-      shadowColor: 'shadow-blue-500/50'
-    },
-    {
-      name: 'YouTube',
-      icon: Youtube,
-      url: 'https://youtube.com/@vinatetcovn',
-      color: 'bg-red-600 hover:bg-red-700',
-      shadowColor: 'shadow-red-500/50'
-    }
-  ]
+interface SocialLink {
+  platform: string
+  url: string
+  label?: string
+}
+
+interface SocialMediaButtonsProps {
+  socialLinks: SocialLink[]
+}
+
+const getSocialIcon = (platform: string) => {
+  switch (platform.toLowerCase()) {
+    case 'facebook':
+      return Facebook
+    case 'instagram':
+      return Instagram
+    case 'linkedin':
+      return Linkedin
+    case 'youtube':
+      return Youtube
+    case 'twitter':
+      return Twitter
+    default:
+      return Facebook
+  }
+}
+
+const getSocialColor = (platform: string) => {
+  switch (platform.toLowerCase()) {
+    case 'facebook':
+      return 'bg-blue-600 hover:bg-blue-700'
+    case 'instagram':
+      return 'bg-pink-600 hover:bg-pink-700'
+    case 'linkedin':
+      return 'bg-blue-700 hover:bg-blue-800'
+    case 'youtube':
+      return 'bg-red-600 hover:bg-red-700'
+    case 'twitter':
+      return 'bg-sky-500 hover:bg-sky-600'
+    default:
+      return 'bg-gray-600 hover:bg-gray-700'
+  }
+}
+
+export const SocialMediaButtons: React.FC<SocialMediaButtonsProps> = ({ socialLinks }) => {
+  if (!socialLinks || socialLinks.length === 0) {
+    return null
+  }
 
   return (
-    <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40 flex flex-col space-y-3">
-      {socialLinks.map((social) => {
-        const IconComponent = social.icon
+    <div className="flex flex-wrap gap-3">
+      {socialLinks.map((social, index) => {
+        const IconComponent = getSocialIcon(social.platform)
+        const colorClass = getSocialColor(social.platform)
+
         return (
           <a
-            key={social.name}
+            key={index}
             href={social.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-12 h-12 ${social.color} rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl ${social.shadowColor} transition-all duration-200 hover:scale-110`}
-            aria-label={`Follow us on ${social.name}`}
+            className={`w-10 h-10 ${colorClass} rounded-full flex items-center justify-center text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105`}
+            aria-label={social.label || `Follow us on ${social.platform}`}
+            title={social.label || `Follow us on ${social.platform}`}
           >
-            <IconComponent className="w-6 h-6" />
+            <IconComponent className="w-5 h-5" />
           </a>
         )
       })}
