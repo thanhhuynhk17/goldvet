@@ -71,6 +71,87 @@
 - **Type Safety**: Proper TypeScript types for mixed block rendering
 - **Performance**: Single rendering pass for all page content
 
+### Block-Based Architecture Updates
+
+#### StoreLayout Block
+- **Purpose**: Advanced store page with filtering and search capabilities
+- **Admin Fields**: Title, subtitle, filters, search, ratings, pagination controls
+- **Client Component**: Uses Framer Motion for animations and interactive filtering
+- **Data Fetching**: PayloadCMS actions with proper error handling and loading states
+- **Features**: Real-time search, category filtering, animal type filtering, formulation filtering
+
+#### Enhanced ProductShowcase Block
+- **Converted**: From server component to client component to support Framer Motion
+- **Features**: Same design as StoreLayout with ratings, badges, and hover effects
+- **Animations**: Staggered product card animations with fade-in effects
+- **Call-to-Action**: Links to full store page with professional styling
+- **Loading States**: Skeleton loading with proper UX during data fetching
+
+#### Client Component Block Patterns
+```typescript
+// Pattern: Client component blocks with data fetching
+'use client'
+export const BlockName: React.FC<Props> = ({ ... }) => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const result = await getDataAction({...})
+        setData(result.docs)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [dependencies])
+
+  // Loading state
+  if (loading) return <SkeletonLoader />
+
+  // Error state
+  if (error) return <ErrorMessage error={error} />
+
+  // Success state with Framer Motion
+  return (
+    <motion.div initial="hidden" whileInView="visible" variants={animations}>
+      {/* Render content */}
+    </motion.div>
+  )
+}
+```
+
+#### Block Registration Pattern
+```typescript
+// In Pages collection blocks array
+blocks: [
+  StoreLayout,      // New advanced store block
+  ProductShowcase,  // Enhanced with client features
+  // ... other blocks
+]
+```
+
+#### Seed Data with Block Configuration
+```typescript
+// cua-hang page seed data
+layout: [{
+  blockType: 'storeLayout',
+  blockName: 'Store Layout',
+  title: 'Sản phẩm',
+  subtitle: 'Giải pháp dược phẩm thú y toàn diện',
+  displayFilters: true,
+  enableSearch: true,
+  showRatings: true,
+  itemsPerPage: 12,
+  sortBy: 'createdAt'
+}]
+```
+
 ## Development Environment Setup
 
 ### Prerequisites

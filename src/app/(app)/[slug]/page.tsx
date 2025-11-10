@@ -11,17 +11,9 @@ import React from 'react'
 
 import type { Page } from '@/payload-types'
 import { notFound } from 'next/navigation'
-import { Grid } from '@/components/Grid'
-import { ProductGridItem } from '@/components/ProductGridItem'
-import { ProductFilters } from '@/components/ProductFilters'
-import Link from 'next/link'
-import { Media } from '@/components/Media'
-import { cn } from '@/utilities/cn'
 import { getNews } from '@/actions/news'
-import { getProducts } from '@/actions/products'
-import { NewsGridPagination } from '@/components/NewsGridClient'
 import { NewsPageClient } from '@/components/NewsPageClient'
-import { StorePageClient } from '@/components/StorePageClient'
+
 
 export const dynamic = 'force-dynamic'
 
@@ -88,10 +80,7 @@ export default async function Page({ params, searchParams }: Args) {
     return notFound()
   }
 
-  // Special handling for cua-hang (store) page with product filtering
-  if (slug === 'cua-hang') {
-    return <StorePage searchParams={searchParams} page={page} />
-  }
+
 
   // Special handling for bai-viet (news) page with category filtering
   if (slug === 'bai-viet') {
@@ -108,38 +97,7 @@ export default async function Page({ params, searchParams }: Args) {
   )
 }
 
-// Store page component with client-side product filtering
-async function StorePage({ searchParams, page }: { searchParams?: Promise<any>, page: Page }) {
-  const params = searchParams ? await searchParams : {}
-  const { animalType, formulation, productType, q: searchValue } = params
 
-  // Fetch initial products for server-side rendering
-  const productsData = await getProducts({
-    animalType: animalType as string,
-    formulation: formulation as string,
-    productType: productType as string,
-    searchValue: searchValue as string,
-    limit: 12
-  })
-
-  return (
-    <article className="pt-16 pb-24">
-      <RenderHero {...page.hero} />
-
-      {/* Client-side filtering */}
-      <StorePageClient
-        initialProducts={productsData.docs}
-        initialFilters={{
-          animalType: animalType as string,
-          formulation: formulation as string,
-          productType: productType as string,
-          searchValue: searchValue as string,
-        }}
-        initialTotalCount={productsData.totalDocs}
-      />
-    </article>
-  )
-}
 
 // News page component with client-side category filtering and pagination
 async function NewsPage({ searchParams, page }: { searchParams?: Promise<any>, page: Page }) {

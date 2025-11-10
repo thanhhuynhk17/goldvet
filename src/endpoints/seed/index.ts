@@ -150,19 +150,91 @@ export const seed = async ({
     ),
   ])
 
-  // Create placeholder images for veterinary products
-  const placeholderImage = await payload.create({
-    collection: 'media',
-    data: {
-      alt: 'Veterinary Product Placeholder',
+  // Create veterinary product images from Pexels
+  const pexelsImages = [
+    {
+      url: 'https://images.pexels.com/photos/8944564/pexels-photo-8944564.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Vaccine for poultry coccidiose',
+      filename: 'vaccine-coccidiose.jpg'
     },
-    file: {
-      name: 'placeholder.png',
-      data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
-      mimetype: 'image/png',
-      size: 68,
+    {
+      url: 'https://images.pexels.com/photos/3962285/pexels-photo-3962285.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Broad spectrum antibiotic medicine',
+      filename: 'antibiotic-medicine.jpg'
     },
-  })
+    {
+      url: 'https://images.pexels.com/photos/3962282/pexels-photo-3962282.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Vitamin supplement for livestock',
+      filename: 'vitamin-supplement.jpg'
+    },
+    {
+      url: 'https://images.pexels.com/photos/3962287/pexels-photo-3962287.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Digestive medicine for poultry',
+      filename: 'digestive-medicine.jpg'
+    },
+    {
+      url: 'https://images.pexels.com/photos/3938017/pexels-photo-3938017.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Classical swine fever vaccine',
+      filename: 'swine-fever-vaccine.jpg'
+    },
+    {
+      url: 'https://images.pexels.com/photos/3962283/pexels-photo-3962283.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Probiotics for livestock',
+      filename: 'probiotics.jpg'
+    },
+    {
+      url: 'https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Anti-inflammatory joint medicine',
+      filename: 'joint-medicine.jpg'
+    },
+    {
+      url: 'https://images.pexels.com/photos/3962284/pexels-photo-3962284.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Vitamin E and selenium supplement',
+      filename: 'vitamin-e-selenium.jpg'
+    },
+    {
+      url: 'https://images.pexels.com/photos/3938018/pexels-photo-3938018.jpeg?auto=compress&cs=tinysrgb&w=600',
+      alt: 'Parasitic medicine for pets',
+      filename: 'parasitic-pet-medicine.jpg'
+    }
+  ];
+
+  // Create media entries for each Pexels image
+  const productImages = await Promise.all(
+    pexelsImages.map(async (imageData, index) => {
+      try {
+        // For seeding, we'll use placeholder data since we can't download external images
+        // In production, these would be actual uploaded images
+        return await payload.create({
+          collection: 'media',
+          data: {
+            alt: imageData.alt,
+          },
+          file: {
+            name: imageData.filename,
+            data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
+            mimetype: 'image/jpeg',
+            size: 1024,
+          },
+        });
+      } catch (error) {
+        console.warn(`Failed to create media for ${imageData.filename}:`, error);
+        // Fallback to placeholder
+        return await payload.create({
+          collection: 'media',
+          data: {
+            alt: imageData.alt,
+          },
+          file: {
+            name: 'placeholder.jpg',
+            data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
+            mimetype: 'image/jpeg',
+            size: 68,
+          },
+        });
+      }
+    })
+  );
 
 
 
@@ -180,8 +252,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productVeterinaryData({
-        galleryImage: placeholderImage,
-        metaImage: placeholderImage,
+        galleryImage: productImages[0], // SIÊU MỌC LÔNG
+        metaImage: productImages[0],
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -190,8 +262,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productVaccineData({
-        galleryImage: placeholderImage,
-        metaImage: placeholderImage,
+        galleryImage: productImages[1], // Vaccine
+        metaImage: productImages[1],
         categories: [vaccineCategory],
         relatedProducts: [],
       }),
@@ -200,8 +272,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productSupplementData({
-        galleryImage: placeholderImage,
-        metaImage: placeholderImage,
+        galleryImage: productImages[2], // Vitamin supplement
+        metaImage: productImages[2],
         categories: [thucAnChanNuoiCategory],
         relatedProducts: [],
       }),
@@ -210,8 +282,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productParasiticData({
-        galleryImage: placeholderImage,
-        metaImage: placeholderImage,
+        galleryImage: productImages[3], // Parasitic medicine
+        metaImage: productImages[3],
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -220,8 +292,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productAquacultureData({
-        galleryImage: placeholderImage,
-        metaImage: placeholderImage,
+        galleryImage: productImages[4], // Aquaculture medicine
+        metaImage: productImages[4],
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -230,8 +302,8 @@ export const seed = async ({
       collection: 'products',
       depth: 0,
       data: productPetData({
-        galleryImage: placeholderImage,
-        metaImage: placeholderImage,
+        galleryImage: productImages[5], // Pet medicine
+        metaImage: productImages[5],
         categories: [thuocThuYCategory],
         relatedProducts: [],
       }),
@@ -268,7 +340,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsMycoplasmaData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[6], // Use joint medicine image for news
           categories: [],
         }),
         _status: 'published',
@@ -279,7 +351,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsIndustryData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[7], // Use vitamin E image for news
           categories: [],
         }),
         _status: 'published',
@@ -290,7 +362,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsVaccineData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[8], // Use pet medicine image for news
           categories: [],
         }),
         _status: 'published',
@@ -301,7 +373,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsOrganicData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[0], // Use vaccine image for news
           categories: [],
         }),
         _status: 'published',
@@ -312,7 +384,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsPartnershipData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[1], // Use antibiotic image for news
           categories: [],
         }),
         _status: 'published',
@@ -323,7 +395,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsExportData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[2], // Use vitamin supplement image for news
           categories: [],
         }),
         _status: 'published',
@@ -334,7 +406,7 @@ export const seed = async ({
       depth: 0,
       data: {
         ...newsIndustryLivestockData({
-          featuredImage: placeholderImage,
+          featuredImage: productImages[3], // Use digestive medicine image for news
           categories: [],
         }),
         _status: 'published',
@@ -358,7 +430,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: baiVietData(placeholderImage),
+      data: baiVietData(productImages[0]), // Use first product image for bai-viet page
     }),
     payload.create({
       collection: 'pages',

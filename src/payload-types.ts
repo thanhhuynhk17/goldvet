@@ -482,6 +482,7 @@ export interface Page {
     | AboutPageBlock
     | AboutSectionBlock
     | ProductSectionBlock
+    | StoreLayoutBlock
     | AchievementsBlock
     | HeroCarouselBlock
     | StatisticsBlock
@@ -647,6 +648,43 @@ export interface ProductSectionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StoreLayoutBlock".
+ */
+export interface StoreLayoutBlock {
+  /**
+   * Tiêu đề hiển thị ở đầu trang cửa hàng
+   */
+  title?: string | null;
+  /**
+   * Phụ đề hiển thị dưới tiêu đề
+   */
+  subtitle?: string | null;
+  /**
+   * Cho phép người dùng lọc sản phẩm theo danh mục
+   */
+  displayFilters?: boolean | null;
+  /**
+   * Hiển thị ô tìm kiếm sản phẩm
+   */
+  enableSearch?: boolean | null;
+  /**
+   * Hiển thị sao đánh giá trên thẻ sản phẩm
+   */
+  showRatings?: boolean | null;
+  /**
+   * Số lượng sản phẩm hiển thị trên mỗi trang
+   */
+  itemsPerPage?: number | null;
+  /**
+   * Tiêu chí sắp xếp sản phẩm mặc định
+   */
+  sortBy?: ('createdAt' | '-createdAt' | 'title' | '-title' | 'priceInUSD' | '-priceInUSD') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'storeLayout';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1488,6 +1526,7 @@ export interface PagesSelect<T extends boolean = true> {
         aboutPage?: T | AboutPageBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
         productSection?: T | ProductSectionBlockSelect<T>;
+        storeLayout?: T | StoreLayoutBlockSelect<T>;
         achievements?: T | AchievementsBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
         statistics?: T | StatisticsBlockSelect<T>;
@@ -1645,6 +1684,21 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
 export interface ProductSectionBlockSelect<T extends boolean = true> {
   title?: T;
   displayCount?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StoreLayoutBlock_select".
+ */
+export interface StoreLayoutBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  displayFilters?: T;
+  enableSearch?: T;
+  showRatings?: T;
+  itemsPerPage?: T;
+  sortBy?: T;
   id?: T;
   blockName?: T;
 }

@@ -19,7 +19,7 @@ export const cuaHangData: () => RequiredDataFromCollectionSlug<'pages'> = () => 
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Giới thiệu - Goldvet',
+                  text: 'Sản phẩm',
                   version: 1,
                 },
               ],
@@ -38,7 +38,7 @@ export const cuaHangData: () => RequiredDataFromCollectionSlug<'pages'> = () => 
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Hơn 50 năm tiên phong trong lĩnh vực dược phẩm thú y, mang đến những giải pháp chăm sóc sức khỏe động vật toàn diện',
+                  text: 'Giải pháp dược phẩm thú y toàn diện',
                   version: 1,
                 },
               ],
@@ -57,10 +57,15 @@ export const cuaHangData: () => RequiredDataFromCollectionSlug<'pages'> = () => 
     },
     layout: [
       {
-        blockType: 'productSection',
-        blockName: 'Store Products',
-        title: 'Sản Phẩm Thú Y',
-        displayCount: 8,
+        blockType: 'storeLayout',
+        blockName: 'Store Layout',
+        title: 'Sản phẩm',
+        subtitle: 'Giải pháp dược phẩm thú y toàn diện',
+        displayFilters: true,
+        enableSearch: true,
+        showRatings: true,
+        itemsPerPage: 12,
+        sortBy: 'createdAt'
       },
     ],
     meta: {

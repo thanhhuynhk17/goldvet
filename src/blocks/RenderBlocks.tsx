@@ -1,6 +1,7 @@
 import { AboutSectionBlock } from '@/blocks/AboutSection/Component'
 import { AboutPageBlock } from '@/blocks/AboutPage/Component'
 import { ProductSectionBlock } from '@/blocks/ProductSection/Component'
+import { StoreLayoutBlock } from '@/blocks/StoreLayout/Component'
 import { AchievementsBlock } from '@/blocks/Achievements/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
@@ -26,6 +27,7 @@ const blockComponents = {
   aboutPage: AboutPageBlock,
   aboutSection: AboutSectionBlock,
   productSection: ProductSectionBlock,
+  storeLayout: StoreLayoutBlock,
   achievements: AchievementsBlock,
   archive: ArchiveBlock,
   banner: BannerBlock,

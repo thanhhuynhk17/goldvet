@@ -18,6 +18,7 @@ import { NewsGrid } from '@/blocks/NewsGrid/config'
 import { AboutSection } from '@/blocks/AboutSection/config'
 import { AboutPage } from '@/blocks/AboutPage/config'
 import { ProductSection } from '@/blocks/ProductSection/config'
+import { StoreLayout } from '@/blocks/StoreLayout/config'
 import { hero } from '@/fields/hero'
 import { slugField } from 'payload'
 import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
@@ -99,6 +100,7 @@ export const Pages: CollectionConfig = {
                 AboutPage,
                 AboutSection,
                 ProductSection,
+                StoreLayout,
                 Achievements,
                 HeroCarousel,
                 Statistics,

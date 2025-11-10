@@ -105,6 +105,9 @@ export default {
         mono: ['monospace'],
         sans: ['Roboto', 'system-ui', 'sans-serif'],
       },
+      backgroundImage: {
+        'world-map': `url("data:image/svg+xml,%3Csvg width='1200' height='800' viewBox='0 0 1200 800' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M600 400c0-110.46-89.54-200-200-200s-200 89.54-200 200 89.54 200 200 200 200-89.54 200-200zM400 200c-165.69 0-300 134.31-300 300s134.31 300 300 300 300-134.31 300-300-134.31-300-300-300z' stroke='%23000000' stroke-width='2' fill='none'/%3E%3Cpath d='M200 400h800M600 100v600' stroke='%23000000' stroke-width='1' fill='none'/%3E%3C/svg%3E")`,
+      },
       keyframes: {
         fadeIn: {
           from: { opacity: 0 },

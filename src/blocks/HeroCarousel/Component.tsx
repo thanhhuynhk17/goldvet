@@ -54,8 +54,8 @@ export const HeroCarouselBlock: React.FC<
               priority={index === 0}
             />
           )}
-          {/* Gradient overlay for better text visibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+          {/* Green Gradient Overlay */}
+          <div className="absolute inset-0 bg-linear-to-t from-gray-600/50 to-transparent" />
 
           {/* Content positioned in lower middle area */}
           <div className="absolute bottom-32 left-8 right-8 text-white max-w-4xl">

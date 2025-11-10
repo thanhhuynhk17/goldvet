@@ -55,13 +55,15 @@ export async function getProducts({
   formulation,
   productType,
   searchValue,
-  limit = 12
+  limit = 12,
+  sort = '-createdAt'
 }: {
   animalType?: string
   formulation?: string
   productType?: string
   searchValue?: string
   limit?: number
+  sort?: string
 }) {
   const payload = await getPayload({ config: configPromise })
 
@@ -121,7 +123,7 @@ export async function getProducts({
       productType: true,
     },
     where,
-    sort: '-createdAt',
+    sort,
     limit,
   })
 
