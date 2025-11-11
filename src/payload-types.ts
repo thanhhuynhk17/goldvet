@@ -311,6 +311,49 @@ export interface Product {
   formulation: 'injection' | 'solution' | 'powder' | 'tablets' | 'external';
   productType: 'vaccine' | 'medication' | 'supplement' | 'parasitic' | 'support';
   featured?: boolean | null;
+  activeIngredient?: string | null;
+  concentration?: string | null;
+  pharmaceuticalForm?: string | null;
+  appearance?: string | null;
+  packing?: string | null;
+  storageConditions?: string | null;
+  shelfLife?: string | null;
+  indications?:
+    | {
+        indication: string;
+        id?: string | null;
+      }[]
+    | null;
+  dosage?:
+    | {
+        species: string;
+        dose: string;
+        duration: string;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  contraindications?:
+    | {
+        contraindication: string;
+        id?: string | null;
+      }[]
+    | null;
+  sideEffects?:
+    | {
+        effect: string;
+        id?: string | null;
+      }[]
+    | null;
+  ingredients?:
+    | {
+        name: string;
+        percentage: string;
+        id?: string | null;
+      }[]
+    | null;
+  certificate?: string | null;
+  registration?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -482,6 +525,7 @@ export interface Page {
     | AboutPageBlock
     | AboutSectionBlock
     | ProductSectionBlock
+    | ProductDetailBlock
     | StoreLayoutBlock
     | AchievementsBlock
     | HeroCarouselBlock
@@ -648,6 +692,19 @@ export interface ProductSectionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductDetailBlock".
+ */
+export interface ProductDetailBlock {
+  /**
+   * Select the product to display detailed information for
+   */
+  product: number | Product;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productDetail';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1526,6 +1583,7 @@ export interface PagesSelect<T extends boolean = true> {
         aboutPage?: T | AboutPageBlockSelect<T>;
         aboutSection?: T | AboutSectionBlockSelect<T>;
         productSection?: T | ProductSectionBlockSelect<T>;
+        productDetail?: T | ProductDetailBlockSelect<T>;
         storeLayout?: T | StoreLayoutBlockSelect<T>;
         achievements?: T | AchievementsBlockSelect<T>;
         heroCarousel?: T | HeroCarouselBlockSelect<T>;
@@ -1684,6 +1742,15 @@ export interface AboutSectionBlockSelect<T extends boolean = true> {
 export interface ProductSectionBlockSelect<T extends boolean = true> {
   title?: T;
   displayCount?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductDetailBlock_select".
+ */
+export interface ProductDetailBlockSelect<T extends boolean = true> {
+  product?: T;
   id?: T;
   blockName?: T;
 }
@@ -2198,6 +2265,49 @@ export interface ProductsSelect<T extends boolean = true> {
   formulation?: T;
   productType?: T;
   featured?: T;
+  activeIngredient?: T;
+  concentration?: T;
+  pharmaceuticalForm?: T;
+  appearance?: T;
+  packing?: T;
+  storageConditions?: T;
+  shelfLife?: T;
+  indications?:
+    | T
+    | {
+        indication?: T;
+        id?: T;
+      };
+  dosage?:
+    | T
+    | {
+        species?: T;
+        dose?: T;
+        duration?: T;
+        notes?: T;
+        id?: T;
+      };
+  contraindications?:
+    | T
+    | {
+        contraindication?: T;
+        id?: T;
+      };
+  sideEffects?:
+    | T
+    | {
+        effect?: T;
+        id?: T;
+      };
+  ingredients?:
+    | T
+    | {
+        name?: T;
+        percentage?: T;
+        id?: T;
+      };
+  certificate?: T;
+  registration?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;

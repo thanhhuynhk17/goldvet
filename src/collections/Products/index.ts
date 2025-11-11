@@ -262,6 +262,179 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
       defaultValue: false,
       label: 'Nổi bật (Featured)',
     },
+    // Veterinary product specification fields
+    {
+      name: 'activeIngredient',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Chất hoạt động (Active Ingredient)',
+    },
+    {
+      name: 'concentration',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Hàm lượng (Concentration)',
+    },
+    {
+      name: 'pharmaceuticalForm',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Dạng bào chế (Pharmaceutical Form)',
+    },
+    {
+      name: 'appearance',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Hình trạng (Appearance)',
+    },
+    {
+      name: 'packing',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Đóng gói (Packing)',
+    },
+    {
+      name: 'storageConditions',
+      type: 'textarea',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Điều kiện bảo quản (Storage Conditions)',
+    },
+    {
+      name: 'shelfLife',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Hạn sử dụng (Shelf Life)',
+    },
+    {
+      name: 'indications',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Chỉ định (Indications)',
+      fields: [
+        {
+          name: 'indication',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'dosage',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Liều lượng (Dosage)',
+      fields: [
+        {
+          name: 'species',
+          type: 'text',
+          required: true,
+          label: 'Loài động vật (Species)',
+        },
+        {
+          name: 'dose',
+          type: 'text',
+          required: true,
+          label: 'Liều lượng (Dose)',
+        },
+        {
+          name: 'duration',
+          type: 'text',
+          required: true,
+          label: 'Thời gian (Duration)',
+        },
+        {
+          name: 'notes',
+          type: 'text',
+          label: 'Ghi chú (Notes)',
+        },
+      ],
+    },
+    {
+      name: 'contraindications',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Chống chỉ định (Contraindications)',
+      fields: [
+        {
+          name: 'contraindication',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'sideEffects',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Tác dụng phụ (Side Effects)',
+      fields: [
+        {
+          name: 'effect',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'ingredients',
+      type: 'array',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Thành phần (Ingredients)',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+          label: 'Tên thành phần (Name)',
+        },
+        {
+          name: 'percentage',
+          type: 'text',
+          required: true,
+          label: 'Hàm lượng (Percentage)',
+        },
+      ],
+    },
+    {
+      name: 'certificate',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Chứng nhận (Certificate)',
+    },
+    {
+      name: 'registration',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      label: 'Đăng ký (Registration)',
+    },
     slugField(),
   ],
 })

@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Search, Filter, ChevronRight, Star } from 'lucide-react';
+import { Search, Filter, Star } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { getProducts } from '@/actions/products';
 import { cn } from '@/utilities/cn';
 import type { Product } from '@/payload-types';
+import Link from 'next/link';
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 60 },
@@ -65,11 +66,28 @@ export function StoreLayoutBlock({
   const [isLoading, setIsLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
 
-  // Load initial products
+  // Load initial products with URL parameter filters
   React.useEffect(() => {
     const loadInitialProducts = async () => {
       try {
+        // Read URL parameters for initial filter state
+        const urlParams = new URLSearchParams(window.location.search);
+        const animalType = urlParams.get('animalType') || undefined;
+        const formulation = urlParams.get('formulation') || undefined;
+        const productType = urlParams.get('productType') || undefined;
+        const searchValue = urlParams.get('q') || undefined;
+
+        // Set initial filter state from URL
+        if (animalType) setSelectedAnimal(animalType);
+        if (formulation) setSelectedType(formulation);
+        if (productType) setSelectedCategory(productType);
+        if (searchValue) setSearchQuery(searchValue);
+
         const result = await getProducts({
+          animalType,
+          formulation,
+          productType,
+          searchValue,
           limit: itemsPerPage,
           sort: sortBy
         });
@@ -84,6 +102,34 @@ export function StoreLayoutBlock({
 
     loadInitialProducts();
   }, [itemsPerPage, sortBy]);
+
+  // Handle browser navigation (back/forward buttons)
+  React.useEffect(() => {
+    const handlePopState = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const animalType = urlParams.get('animalType') || undefined;
+      const formulation = urlParams.get('formulation') || undefined;
+      const productType = urlParams.get('productType') || undefined;
+      const searchValue = urlParams.get('q') || undefined;
+
+      // Update filter state from URL
+      setSelectedAnimal(animalType || null);
+      setSelectedType(formulation || null);
+      setSelectedCategory(productType || null);
+      setSearchQuery(searchValue || '');
+
+      // Re-fetch products with new filters
+      fetchProducts({
+        animalType,
+        formulation,
+        productType,
+        searchValue
+      });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Update URL without causing navigation
   const updateURL = (filters: {
@@ -413,89 +459,79 @@ export function StoreLayoutBlock({
             ) : products.length > 0 ? (
               <div className="grid md:grid-cols-2 gap-6">
                 {products.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    variants={scaleIn}
-                    whileHover={{ y: -8 }}
-                    className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow group cursor-pointer"
-                  >
-                    <div className="relative h-64 overflow-hidden bg-gray-100">
-                      {(() => {
-                        const image =
-                          product.gallery?.[0]?.image && typeof product.gallery[0]?.image !== 'string'
-                            ? product.gallery[0]?.image
-                            : false
-                        return image ? (
-                          <img
-                            src={(image as any)?.url || ''}
-                            alt={product.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
-                        ) : null
-                      })()}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-                          Xem chi tiết
-                          <ChevronRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </motion.div>
-                    </div>
-
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <p className="text-xs font-semibold text-green-600 uppercase tracking-wide">
-                            {product.productType || 'Sản phẩm'}
-                          </p>
-                          <h3 className="text-lg font-bold text-gray-900 mt-2 line-clamp-2">
-                            {product.title}
-                          </h3>
-                        </div>
+                  <Link key={product.id} href={`/cua-hang/${product.slug}`} className="block">
+                    <motion.div
+                      variants={scaleIn}
+                      whileHover={{ y: -8 }}
+                      className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow group cursor-pointer"
+                    >
+                      <div className="relative h-64 overflow-hidden bg-gray-100">
+                        {(() => {
+                          const image =
+                            product.gallery?.[0]?.image && typeof product.gallery[0]?.image !== 'string'
+                              ? product.gallery[0]?.image
+                              : false
+                          return image ? (
+                            <img
+                              src={(image as any)?.url || ''}
+                              alt={product.title}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          ) : null
+                        })()}
                       </div>
 
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {typeof product.description === 'string'
-                          ? product.description
-                          : 'Mô tả sản phẩm'}
-                      </p>
-
-                      {showRatings && (
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-4 h-4 ${
-                                  i < 4 // Mock 4-star rating
-                                    ? 'fill-yellow-400 text-yellow-400'
-                                    : 'text-gray-300'
-                                }`}
-                              />
-                            ))}
+                      <div className="p-6">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <p className="text-xs font-semibold text-green-600 uppercase tracking-wide">
+                              {product.productType || 'Sản phẩm'}
+                            </p>
+                            <h3 className="text-lg font-bold text-gray-900 mt-2 line-clamp-2">
+                              {product.title}
+                            </h3>
                           </div>
-                          <span className="text-sm font-semibold text-gray-700">4.8</span>
                         </div>
-                      )}
 
-                      <div className="flex gap-2 flex-wrap">
-                        {product.animalType && (
-                          <span className="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium">
-                            {product.animalType}
-                          </span>
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                          {typeof product.description === 'string'
+                            ? product.description
+                            : 'Mô tả sản phẩm'}
+                        </p>
+
+                        {showRatings && (
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`w-4 h-4 ${
+                                    i < 4 // Mock 4-star rating
+                                      ? 'fill-yellow-400 text-yellow-400'
+                                      : 'text-gray-300'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            <span className="text-sm font-semibold text-gray-700">4.8</span>
+                          </div>
                         )}
-                        {product.formulation && (
-                          <span className="text-xs bg-purple-50 text-purple-700 px-3 py-1 rounded-full font-medium">
-                            {product.formulation}
-                          </span>
-                        )}
+
+                        <div className="flex gap-2 flex-wrap">
+                          {product.animalType && (
+                            <span className="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium">
+                              {product.animalType}
+                            </span>
+                          )}
+                          {product.formulation && (
+                            <span className="text-xs bg-purple-50 text-purple-700 px-3 py-1 rounded-full font-medium">
+                              {product.formulation}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+                    </motion.div>
+                  </Link>
                 ))}
               </div>
             ) : (

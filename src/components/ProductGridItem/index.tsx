@@ -42,7 +42,7 @@ export const ProductGridItem: React.FC<Props> = ({ product }) => {
       whileHover={{ y: -8 }}
       className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow group cursor-pointer"
     >
-      <Link href={`/products/${product.slug}`} className="block">
+      <Link href={`/cua-hang/${product.slug}`} className="block">
         <div className="relative h-64 overflow-hidden bg-gray-100">
           {image ? (
             <img

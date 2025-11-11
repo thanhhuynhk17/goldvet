@@ -13,6 +13,7 @@ import { HeroCarouselBlock } from '@/blocks/HeroCarousel/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { NewsGridBlock } from '@/blocks/NewsGrid/Component'
 import { ProductShowcaseBlock } from '@/blocks/ProductShowcase/Component'
+import { ProductDetail } from '@/blocks/ProductDetail/Component'
 import { StatisticsBlock } from '@/blocks/Statistics/Component'
 import { ThreeItemGridBlock } from '@/blocks/ThreeItemGrid/Component'
 import { HighImpactHero } from '@/heros/HighImpact'
@@ -27,6 +28,7 @@ const blockComponents = {
   aboutPage: AboutPageBlock,
   aboutSection: AboutSectionBlock,
   productSection: ProductSectionBlock,
+  productDetail: ProductDetail,
   storeLayout: StoreLayoutBlock,
   achievements: AchievementsBlock,
   archive: ArchiveBlock,
