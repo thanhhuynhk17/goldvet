@@ -136,6 +136,13 @@ blocks: [
 ]
 ```
 
+#### NewsArticle Block
+- **Purpose**: Flexible news article display with admin-configurable options
+- **Features**: Category badges, publication dates, excerpts, featured images, back-to-news links
+- **Admin Fields**: Checkboxes for display options, customizable link text/URLs
+- **Migration**: Converted from hardcoded components to block-based system
+- **Implementation**: Receives news data as props, renders with configurable display options
+
 #### Seed Data with Block Configuration
 ```typescript
 // cua-hang page seed data
@@ -149,6 +156,18 @@ layout: [{
   showRatings: true,
   itemsPerPage: 12,
   sortBy: 'createdAt'
+}]
+
+// News article default layout
+layout: [{
+  blockType: 'newsArticle',
+  blockName: 'News Article',
+  showCategory: true,
+  showDate: true,
+  showExcerpt: true,
+  showFeaturedImage: true,
+  backToNewsText: '← Quay lại bài viết',
+  backToNewsUrl: '/bai-viet'
 }]
 ```
 

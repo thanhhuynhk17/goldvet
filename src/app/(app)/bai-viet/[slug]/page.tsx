@@ -1,9 +1,8 @@
-import { Media } from '@/components/Media'
-import { RichText } from '@/components/RichText'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { RenderHero } from '@/heros/RenderHero'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -61,7 +60,7 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   }
 }
 
-export default async function NewsPage({ params }: Args) {
+export default async function NewsArticlePage({ params }: Args) {
   const { slug } = await params
 
   if (!slug) {
@@ -74,71 +73,74 @@ export default async function NewsPage({ params }: Args) {
     return notFound()
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+  // Fetch the bai-viet page to get its shared hero
+  const baiVietPage = await queryBaiVietPage()
+
+  // Use the bai-viet page hero for all article pages
+  const hero = baiVietPage?.hero || {
+    type: 'lowImpact',
+    richText: {
+      root: {
+        type: 'root',
+        children: [
+          {
+            type: 'heading',
+            children: [{ type: 'text', text: 'Bài Viết & Tin Tức', version: 1 }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            tag: 'h1',
+            version: 1,
+          },
+          {
+            type: 'paragraph',
+            children: [{
+              type: 'text',
+              text: 'Cập nhật những bài viết và tin tức mới nhất từ GoldVet và ngành dược thú y Việt Nam',
+              version: 1
+            }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1,
+      },
+    },
   }
 
+  // Get layout from news object or use default
+  const rawLayout = (news as any).layout || [
+    {
+      blockType: 'newsArticle',
+      showCategory: true,
+      showDate: true,
+      showExcerpt: true,
+      showFeaturedImage: true,
+      backToNewsText: '← Quay lại bài viết',
+      backToNewsUrl: '/bai-viet',
+    },
+  ]
+
+  // Ensure newsArticle blocks have the news data
+  const layout = rawLayout.map((block: any) => {
+    if (block.blockType === 'newsArticle') {
+      return {
+        ...block,
+        news: news, // Inject news data into newsArticle blocks
+      }
+    }
+    return block
+  })
+
   return (
-    <article className="min-h-screen">
-      {/* Hero section */}
-      <div className="bg-gradient-to-r from-green-600 to-green-800 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-4 mb-4">
-              <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                news.category === 'company'
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-green-100 text-green-800'
-              }`}>
-                {news.category === 'company' ? 'Tin GoldVet' : 'Tin ngành'}
-              </span>
-              {news.publishedDate && (
-                <time className="text-sm opacity-90">
-                  {formatDate(news.publishedDate)}
-                </time>
-              )}
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{news.title}</h1>
-            {news.excerpt && (
-              <p className="text-xl opacity-90">{news.excerpt}</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          {/* Featured image */}
-          {news.featuredImage && typeof news.featuredImage === 'object' && news.featuredImage.url && (
-            <div className="mb-8">
-              <Media
-                resource={news.featuredImage}
-                className="w-full h-auto rounded-lg shadow-lg"
-              />
-            </div>
-          )}
-
-          {/* Article content */}
-          <div className="prose prose-lg max-w-none">
-            <RichText data={news.content} enableGutter={false} />
-          </div>
-
-          {/* Back to news link */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <Link
-              href="/bai-viet"
-              className="inline-flex items-center text-green-600 hover:text-green-800 font-medium"
-            >
-              ← Quay lại bài viết
-            </Link>
-          </div>
-        </div>
-      </div>
+    <article className="pt-16 pb-24">
+      <RenderHero {...hero} />
+      <RenderBlocks blocks={layout} />
     </article>
   )
 }
@@ -163,6 +165,22 @@ const queryNewsBySlug = async ({ slug }: { slug: string }) => {
         },
         ...(draft ? [] : [{ _status: { equals: 'published' } }]),
       ],
+    },
+  })
+
+  return result.docs?.[0] || null
+}
+
+const queryBaiVietPage = async () => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'pages',
+    limit: 1,
+    where: {
+      slug: {
+        equals: 'bai-viet',
+      },
     },
   })
 

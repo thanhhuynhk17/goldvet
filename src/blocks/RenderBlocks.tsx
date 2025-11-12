@@ -12,6 +12,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { HeroCarouselBlock } from '@/blocks/HeroCarousel/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { NewsGridBlock } from '@/blocks/NewsGrid/Component'
+import { NewsArticle } from '@/blocks/NewsArticle/Component'
 import { ProductShowcaseBlock } from '@/blocks/ProductShowcase/Component'
 import { ProductDetail } from '@/blocks/ProductDetail/Component'
 import { StatisticsBlock } from '@/blocks/Statistics/Component'
@@ -40,6 +41,7 @@ const blockComponents = {
   heroCarousel: HeroCarouselBlock,
   mediaBlock: MediaBlock,
   newsGrid: NewsGridBlock,
+  newsArticle: NewsArticle,
   productShowcase: ProductShowcaseBlock,
   statistics: StatisticsBlock,
   threeItemGrid: ThreeItemGridBlock,
@@ -79,8 +81,14 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               // Remove margin for hero carousel (first block) to allow full height
               const isHeroCarousel = blockType === 'heroCarousel' && index === 0
+
+              // Force re-mount of StoreLayout when URL search params change for filtering
+              const blockKey = blockType === 'storeLayout'
+                ? `${index}-${typeof window !== 'undefined' ? window.location.search : ''}`
+                : index
+
               return (
-                <div className={isHeroCarousel ? "" : "my-16"} key={index}>
+                <div className={isHeroCarousel ? "" : "my-16"} key={blockKey}>
                   {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                   {/* @ts-ignore - weird type mismatch here */}
                   <Block id={toKebabCase(blockName!)} {...block} />

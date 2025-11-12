@@ -112,13 +112,13 @@ export function NewsPageClient({
   return (
     <div>
       {/* Category filter buttons */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex flex-wrap gap-4">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex flex-wrap gap-4">
           <button
             onClick={() => handleCategoryChange('all')}
             disabled={isPending}
             className={cn(
-              'px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+              'px-6 py-3 rounded-full font-medium transition-colors cursor-pointer disabled:opacity-50',
               category === 'all'
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -130,7 +130,7 @@ export function NewsPageClient({
             onClick={() => handleCategoryChange('company')}
             disabled={isPending}
             className={cn(
-              'px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+              'px-6 py-3 rounded-full font-medium transition-colors cursor-pointer disabled:opacity-50',
               category === 'company'
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -142,7 +142,7 @@ export function NewsPageClient({
             onClick={() => handleCategoryChange('industry')}
             disabled={isPending}
             className={cn(
-              'px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+              'px-6 py-3 rounded-full font-medium transition-colors cursor-pointer disabled:opacity-50',
               category === 'industry'
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

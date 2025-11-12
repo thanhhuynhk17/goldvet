@@ -889,4 +889,193 @@ export const RenderHero: React.FC<Page['hero']> = (props) => {
 
 **Usage**: **CRITICAL FIX** for hero animation issues during client-side filtering. Ensures hero animations only restart when users navigate to different pages, not when they interact with filters on the same page. Solves the jarring hero refresh problem introduced by client-side filtering implementations.
 
+### 20. PayloadCMS Direct Data Fetching Pattern
+**Pattern**: Use Payload Local API directly in server actions for optimal performance and type safety
+```typescript
+// Server action using Payload Local API directly
+'use server'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
+
+export async function getProducts(filters: {
+  animalType?: string
+  formulation?: string
+  productType?: string
+  searchValue?: string
+  limit?: number
+  sort?: string
+}) {
+  const payload = await getPayload({ config: configPromise })
+
+  // Build where clause dynamically
+  const where: any = {
+    _status: { equals: 'published' }
+  }
+
+  if (filters.animalType) {
+    where.animalType = { equals: filters.animalType }
+  }
+
+  if (filters.formulation) {
+    where.formulation = { equals: filters.formulation }
+  }
+
+  if (filters.productType) {
+    where.productType = { equals: filters.productType }
+  }
+
+  if (filters.searchValue) {
+    where.or = [
+      { title: { like: filters.searchValue } },
+      { description: { like: filters.searchValue } }
+    ]
+  }
+
+  // Execute query with Payload Local API
+  const result = await payload.find({
+    collection: 'products',
+    where,
+    sort: filters.sort || '-createdAt',
+    limit: filters.limit || 12,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      gallery: true,
+      animalType: true,
+      formulation: true,
+      productType: true
+    }
+  })
+
+  return {
+    docs: result.docs,
+    totalDocs: result.totalDocs,
+    totalPages: result.totalPages,
+    page: result.page,
+    hasNextPage: result.page < result.totalPages
+  }
+}
+
+// Client component calling server action
+'use client'
+export function ProductList() {
+  const [products, setProducts] = useState([])
+
+  const loadProducts = async (filters) => {
+    const result = await getProducts(filters) // Direct server action call
+    setProducts(result.docs)
+  }
+
+  return (
+    <div>
+      {/* Product list */}
+    </div>
+  )
+}
+```
+
+**Key Benefits:**
+- ✅ **Type Safety**: Full TypeScript support with generated Payload types
+- ✅ **Performance**: Direct database queries without HTTP overhead
+- ✅ **Consistency**: Same API pattern across all data fetching
+- ✅ **Caching**: Automatic request deduplication and caching
+- ✅ **Security**: Built-in access control and validation
+
+**Usage**: **STANDARD APPROACH** for all data fetching in PayloadCMS projects. Use Payload Local API directly in server actions instead of creating custom API routes. This provides optimal performance, type safety, and maintainability.
+
+**When to use `revalidatePath()`:**
+```typescript
+'use server'
+import { revalidatePath } from 'next/cache'
+
+export async function createProduct(data: Product) {
+  const payload = await getPayload({ config: configPromise })
+  await payload.create({ collection: 'products', data })
+
+  // Invalidate cache for product pages
+  revalidatePath('/cua-hang')
+  revalidatePath('/cua-hang/[slug]', 'page')
+}
+```
+
+**Usage**: Call `revalidatePath()` after mutations to ensure fresh data. Use specific paths or 'page' for dynamic routes.
+
+## Block Usage by Page
+
+### **Complete Block-First Architecture Analysis**
+
+#### **✅ Block-First Pages (Fully Implemented)**
+
+**1. Homepage (`/`)**</parameter>
+- **Route**: `src/app/(app)/page.tsx`
+- **Blocks Used**:
+  - `heroCarousel` - Rotating banner with 4 veterinary slides
+  - `aboutSection` - Company story section
+  - `achievements` - Statistics counters (50+ years, 600+ products, etc.)
+  - `statistics` - Company metrics display
+  - `productShowcase` - Featured veterinary products
+  - `newsGrid` - Latest news articles
+- **Implementation**: `RenderBlocks` with `homeStaticData()`
+
+**2. About Page (`/gioi-thieu`)**
+- **Route**: `src/app/(app)/[slug]/page.tsx` (dynamic routing)
+- **Blocks Used**:
+  - `aboutPage` - Comprehensive company information block
+- **Implementation**: Dynamic slug routing with `RenderBlocks` + `RenderHero`
+
+**3. Contact Page (`/lien-he`)**
+- **Route**: `src/app/(app)/[slug]/page.tsx` (dynamic routing)
+- **Blocks Used**:
+  - `formBlock` - Contact form with validation
+  - `content` - Company contact information
+- **Implementation**: Dynamic slug routing with `RenderBlocks` + `RenderHero`
+
+#### **🔄 Dedicated Page Component Pages (Complex Filtering)**
+
+**4. News Listing (`/bai-viet`)**
+- **Route**: `src/app/(app)/[slug]/page.tsx` (dynamic routing)
+- **Components**: `NewsPage` + `NewsPageClient` + `NewsGridPagination`
+- **Features**: Category filtering, pagination, URL state management
+- **Implementation**: Dedicated page component with client-side filtering
+
+**5. Store Page (`/cua-hang`)**
+- **Route**: `src/app/(app)/[slug]/page.tsx` (dynamic routing)
+- **Components**: `StorePage` + `StorePageClient`
+- **Features**: Product filtering by animal type, URL state management
+- **Implementation**: Dedicated page component with client-side filtering (mirrors bai-viet)
+
+#### **📄 Individual Content Pages**
+
+**6. Product Detail Pages (`/cua-hang/[slug]`)**
+- **Route**: `src/app/(app)/cua-hang/[slug]/page.tsx`
+- **Blocks Used**:
+  - `productDetail` - Individual product information
+- **Implementation**: Dedicated route with block rendering
+
+**7. News Article Pages (`/bai-viet/[slug]`)**
+- **Route**: `src/app/(app)/bai-viet/[slug]/page.tsx`
+- **Blocks Used**:
+  - `newsArticle` - Article content with configurable display options
+- **Implementation**: Dedicated route with `RenderBlocks` + `RenderHero`
+
+#### **Block Architecture Benefits**
+- ✅ **Admin Editable**: All content managed through Payload CMS
+- ✅ **Consistent Styling**: Unified design system across all pages
+- ✅ **Flexible Layout**: Content editors can modify page structure
+- ✅ **Reusable Components**: Blocks work across different contexts
+- ✅ **Type Safe**: Full TypeScript support with generated types
+- ✅ **Performance**: Optimized rendering with proper hydration
+
+#### **Block Registration Status**
+All blocks are properly registered in:
+- `src/blocks/RenderBlocks.tsx` - Frontend rendering
+- `src/payload.config.ts` - Admin panel configuration
+- Collection schemas - For page-specific blocks
+
+#### **Migration Status**
+- **Before**: News articles used hardcoded components
+- **After**: News articles use `newsArticle` block with full admin control
+- **Result**: 100% block-first architecture across all content pages
+
 These patterns provide a solid foundation for maintaining consistency, performance, and developer productivity across the entire Goldvet platform.

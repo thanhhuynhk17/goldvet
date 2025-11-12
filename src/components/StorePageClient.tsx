@@ -2,9 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { getProducts } from '@/actions/products'
-import { ProductFilters } from '@/components/ProductFilters'
 import { ProductGridItem } from '@/components/ProductGridItem'
-import { Grid } from '@/components/Grid'
 import { cn } from '@/utilities/cn'
 import type { Product } from '@/payload-types'
 
@@ -86,7 +84,15 @@ export function StorePageClient({
   }
 
   // Handle filter changes
-  const handleFilterChange = (newFilters: typeof filters) => {
+  const handleFilterChange = (key: string, value: string) => {
+    const newFilters = { ...filters }
+
+    if (key === 'q') {
+      newFilters.searchValue = value || undefined
+    } else if (key === 'animalType' || key === 'formulation' || key === 'productType') {
+      newFilters[key] = value || undefined
+    }
+
     fetchProducts(newFilters)
   }
 
@@ -129,12 +135,45 @@ export function StorePageClient({
         </p>
       </div>
 
-      {/* Filters */}
-      <ProductFilters
-        initialFilters={filters}
-        onFilterChange={handleFilterChange}
-        isLoading={isPending}
-      />
+      {/* Simple filter buttons - like bai-viet */}
+      <div className="mb-8 flex flex-wrap gap-4">
+        <button
+          onClick={() => handleFilterChange('animalType', '')}
+          disabled={isPending}
+          className={cn(
+            'px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+            !filters.animalType
+              ? 'bg-green-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          )}
+        >
+          Tất cả sản phẩm
+        </button>
+        <button
+          onClick={() => handleFilterChange('animalType', 'pig')}
+          disabled={isPending}
+          className={cn(
+            'px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+            filters.animalType === 'pig'
+              ? 'bg-green-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          )}
+        >
+          Heo (Pig)
+        </button>
+        <button
+          onClick={() => handleFilterChange('animalType', 'poultry')}
+          disabled={isPending}
+          className={cn(
+            'px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50',
+            filters.animalType === 'poultry'
+              ? 'bg-green-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          )}
+        >
+          Gia cầm (Poultry)
+        </button>
+      </div>
 
       {/* Results */}
       <div className="mb-6">
@@ -169,11 +208,11 @@ export function StorePageClient({
       )}
 
       {products.length > 0 ? (
-        <Grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <ProductGridItem key={product.id} product={product} />
           ))}
-        </Grid>
+        </div>
       ) : (
         hasActiveFilters ? (
           <div className="text-center py-12">

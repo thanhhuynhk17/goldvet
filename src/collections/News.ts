@@ -8,6 +8,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { NewsArticleConfig } from '@/blocks/NewsArticle'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -137,6 +138,73 @@ export const News: CollectionConfig = {
       },
       defaultValue: false,
       label: 'Nổi bật (Featured)',
+    },
+    // Hero section for block-based layout
+    {
+      name: 'hero',
+      type: 'group',
+      label: 'Hero Section',
+      fields: [
+        {
+          name: 'type',
+          type: 'select',
+          label: 'Hero Type',
+          options: [
+            { label: 'Low Impact', value: 'lowImpact' },
+            { label: 'High Impact', value: 'highImpact' },
+            { label: 'Medium Impact', value: 'mediumImpact' },
+            { label: 'None', value: 'none' },
+          ],
+          defaultValue: 'lowImpact',
+        },
+        {
+          name: 'richText',
+          type: 'richText',
+          label: 'Hero Content',
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => {
+              return [
+                ...rootFeatures,
+                HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+              ]
+            },
+          }),
+          admin: {
+            condition: (data) => data?.hero?.type !== 'none',
+          },
+        },
+        {
+          name: 'media',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Hero Background Image',
+          admin: {
+            condition: (data) => data?.hero?.type !== 'none',
+          },
+        },
+      ],
+    },
+    // Layout blocks for flexible content management
+    {
+      name: 'layout',
+      type: 'blocks',
+      label: 'Article Layout',
+      blocks: [
+        NewsArticleConfig,
+      ],
+      defaultValue: [
+        {
+          blockType: 'newsArticle',
+          showCategory: true,
+          showDate: true,
+          showExcerpt: true,
+          showFeaturedImage: true,
+          backToNewsText: '← Quay lại bài viết',
+          backToNewsUrl: '/bai-viet',
+        },
+      ],
     },
   ],
   versions: {

@@ -13,6 +13,8 @@ import type { Page } from '@/payload-types'
 import { notFound } from 'next/navigation'
 import { getNews } from '@/actions/news'
 import { NewsPageClient } from '@/components/NewsPageClient'
+import { getProducts } from '@/actions/products'
+import { StorePageClient } from '@/components/StorePageClient'
 
 
 export const dynamic = 'force-dynamic'
@@ -87,6 +89,11 @@ export default async function Page({ params, searchParams }: Args) {
     return <NewsPage searchParams={searchParams} page={page} />
   }
 
+  // Special handling for cua-hang (store) page with product filtering
+  if (slug === 'cua-hang') {
+    return <StorePage searchParams={searchParams} page={page} />
+  }
+
   const { hero, layout } = page
 
   return (
@@ -112,7 +119,7 @@ async function NewsPage({ searchParams, page }: { searchParams?: Promise<any>, p
   })
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="pt-8 pb-16">
       <RenderHero {...page.hero} />
 
       {/* Client-side filtering and pagination */}
@@ -122,6 +129,39 @@ async function NewsPage({ searchParams, page }: { searchParams?: Promise<any>, p
         initialPage={parseInt(currentPage as string)}
         initialTotalPages={articlesData.totalPages}
         initialTotalCount={articlesData.totalDocs}
+      />
+    </article>
+  )
+}
+
+// Store page component with client-side product filtering
+async function StorePage({ searchParams, page }: { searchParams?: Promise<any>, page: Page }) {
+  const params = searchParams ? await searchParams : {}
+  const { animalType, formulation, productType, q: searchValue } = params
+
+  // Fetch initial products for server-side rendering
+  const productsData = await getProducts({
+    animalType: animalType as string,
+    formulation: formulation as string,
+    productType: productType as string,
+    searchValue: searchValue as string,
+    limit: 12  // Show 12 products per page
+  })
+
+  return (
+    <article className="pt-16 pb-24">
+      <RenderHero {...page.hero} />
+
+      {/* Client-side filtering */}
+      <StorePageClient
+        initialProducts={productsData.docs}
+        initialFilters={{
+          animalType: animalType as string,
+          formulation: formulation as string,
+          productType: productType as string,
+          searchValue: searchValue as string,
+        }}
+        initialTotalCount={productsData.totalDocs}
       />
     </article>
   )
