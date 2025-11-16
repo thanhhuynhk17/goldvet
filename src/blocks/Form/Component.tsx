@@ -4,6 +4,7 @@ import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
+import { Send } from 'lucide-react'
 import { RichText } from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
@@ -126,50 +127,86 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="container lg:max-w-[48rem]">
-      {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
-      )}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
-        <FormProvider {...formMethods}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        {enableIntro && introContent && !hasSubmitted && (
+          <RichText className="mb-6 lg:mb-8" data={introContent} enableGutter={false} />
+        )}
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">Liên hệ với chúng tôi</h1>
+            <p className="text-slate-600">Điền vào biểu mẫu dưới đây và chúng tôi sẽ quay lại liên hệ với bạn trong thời gian sớm nhất.</p>
+          </div>
+
+          <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+              <RichText data={confirmationMessage} />
+            </div>
           )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-          {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    const Field: React.FC<any> | undefined =
-                      fields?.[field.blockType as keyof typeof fields]
-
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
+          {isLoading && !hasSubmitted && (
+            <div className="text-center py-6">
+              <div className="inline-flex items-center space-x-3 bg-white px-6 py-3 rounded-full shadow-lg">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
+                <span className="text-gray-700 font-medium text-sm">Đang gửi...</span>
               </div>
+            </div>
+          )}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center mb-4">
+              <div className="text-red-700 font-medium text-sm">
+                Lỗi: {error.message || 'Có lỗi xảy ra. Vui lòng thử lại sau.'}
+              </div>
+            </div>
+          )}
+          {!hasSubmitted && (
+            <form id={formID} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-6">
+              {formFromProps?.fields?.map((field, index) => {
+                const Field: React.FC<any> | undefined =
+                  fields?.[field.blockType as keyof typeof fields]
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
-              </Button>
+                if (Field) {
+                  return (
+                    <Field
+                      key={index}
+                      form={formFromProps}
+                      {...field}
+                      {...formMethods}
+                      control={formMethods.control}
+                      errors={errors}
+                      register={register}
+                    />
+                  )
+                }
+                return null
+              })}
+            </div>
+
+              <div className="text-center pt-3">
+                <Button
+                  form={formID}
+                  type="submit"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      Submit
+                    </>
+                  )}
+                </Button>
+              </div>
             </form>
           )}
-        </FormProvider>
+          </FormProvider>
+        </div>
       </div>
     </div>
   )

@@ -2,6 +2,8 @@ import type { CollectionConfig } from 'payload'
 
 import { Banner } from '@/blocks/Banner/config'
 import { Carousel } from '@/blocks/Carousel/config'
+import { ContactInfoCards } from '@/blocks/ContactInfoCards/config'
+
 import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { adminOnly } from '@/access/adminOnly'
@@ -20,6 +22,12 @@ import { AboutPage } from '@/blocks/AboutPage/config'
 import { ProductSection } from '@/blocks/ProductSection/config'
 import { StoreLayout } from '@/blocks/StoreLayout/config'
 import { ProductDetail } from '@/blocks/ProductDetail/config'
+import { ContactHero } from '@/blocks/ContactHero/config'
+import { ContactInfo } from '@/blocks/ContactInfo/config'
+import { ContactForm } from '@/blocks/ContactForm/config'
+import { BusinessRegistration } from '@/blocks/BusinessRegistration/config'
+import { Certifications } from '@/blocks/Certifications/config'
+import { QuickContact } from '@/blocks/QuickContact/config'
 import { hero } from '@/fields/hero'
 import { slugField } from 'payload'
 import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
@@ -109,6 +117,14 @@ export const Pages: CollectionConfig = {
                 ProductShowcase,
                 NewsGrid,
                 CallToAction,
+                ContactInfoCards,
+
+                ContactHero,
+                ContactInfo,
+                ContactForm,
+                BusinessRegistration,
+                Certifications,
+                QuickContact,
                 Content,
                 MediaBlock,
                 Archive,

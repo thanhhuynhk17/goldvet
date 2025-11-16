@@ -1,6 +1,6 @@
 import { RequiredDataFromCollectionSlug } from 'payload'
 
-export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () => {
+export const homeStaticData: (heroImages?: any[]) => RequiredDataFromCollectionSlug<'pages'> = (heroImages = []) => {
   return {
     slug: 'home',
     _status: 'published',
@@ -85,6 +85,7 @@ export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () 
         blockName: 'Hero Carousel',
         slides: [
           {
+            image: heroImages[0], // farm-animal-hospital.jpg
             title: 'Thuốc Thú Y Goldvet - Chuyên Gia Về Sức Khỏe Động Vật',
             subtitle: 'Cung cấp các sản phẩm thú y chính hãng, chất lượng cao cho ngành chăn nuôi',
             link: {
@@ -93,6 +94,7 @@ export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () 
             }
           },
           {
+            image: heroImages[1], // aquaculture-fish-farm.jpg
             title: 'SIÊU MỌC LÔNG - Sản Phẩm Đỉnh Cao',
             subtitle: 'Giải pháp dinh dưỡng chuyên biệt cho vật nuôi',
             link: {
@@ -101,6 +103,7 @@ export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () 
             }
           },
           {
+            image: heroImages[2], // farm-livestock-banner.jpg
             title: 'Phân Phối Toàn Quốc',
             subtitle: 'Miễn phí vận chuyển, hỗ trợ 24/7, giao hàng đúng giờ',
             link: {
@@ -109,6 +112,7 @@ export const homeStaticData: () => RequiredDataFromCollectionSlug<'pages'> = () 
             }
           },
           {
+            image: heroImages[0], // farm-animal-hospital.jpg (reuse)
             title: 'Goldvet - Trao Giá Trị Thật',
             subtitle: 'Đồng hành cùng nhà chăn nuôi Việt Nam',
             link: {

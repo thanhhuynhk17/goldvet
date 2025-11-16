@@ -23,6 +23,7 @@ import { gioiThieuData } from './gioi-thieu.js'
 import { baiVietData } from './bai-viet.js'
 import { cuaHangData } from './cua-hang.js'
 import { lienHeData } from './lien-he.js'
+import { ImageSeeder, VETERINARY_IMAGES } from './images'
 import { Address, Transaction } from '@/payload-types'
 
 const collections: CollectionSlug[] = [
@@ -150,91 +151,18 @@ export const seed = async ({
     ),
   ])
 
-  // Create veterinary product images from Pexels
-  const pexelsImages = [
-    {
-      url: 'https://images.pexels.com/photos/8944564/pexels-photo-8944564.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Vaccine for poultry coccidiose',
-      filename: 'vaccine-coccidiose.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3962285/pexels-photo-3962285.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Broad spectrum antibiotic medicine',
-      filename: 'antibiotic-medicine.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3962282/pexels-photo-3962282.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Vitamin supplement for livestock',
-      filename: 'vitamin-supplement.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3962287/pexels-photo-3962287.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Digestive medicine for poultry',
-      filename: 'digestive-medicine.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3938017/pexels-photo-3938017.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Classical swine fever vaccine',
-      filename: 'swine-fever-vaccine.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3962283/pexels-photo-3962283.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Probiotics for livestock',
-      filename: 'probiotics.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Anti-inflammatory joint medicine',
-      filename: 'joint-medicine.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3962284/pexels-photo-3962284.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Vitamin E and selenium supplement',
-      filename: 'vitamin-e-selenium.jpg'
-    },
-    {
-      url: 'https://images.pexels.com/photos/3938018/pexels-photo-3938018.jpeg?auto=compress&cs=tinysrgb&w=600',
-      alt: 'Parasitic medicine for pets',
-      filename: 'parasitic-pet-medicine.jpg'
-    }
-  ];
+  // Validate that all required images exist before seeding
+  const imageSeeder = new ImageSeeder(payload)
+  const validation = await imageSeeder.validateImages(VETERINARY_IMAGES)
 
-  // Create media entries for each Pexels image
-  const productImages = await Promise.all(
-    pexelsImages.map(async (imageData, index) => {
-      try {
-        // For seeding, we'll use placeholder data since we can't download external images
-        // In production, these would be actual uploaded images
-        return await payload.create({
-          collection: 'media',
-          data: {
-            alt: imageData.alt,
-          },
-          file: {
-            name: imageData.filename,
-            data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
-            mimetype: 'image/jpeg',
-            size: 1024,
-          },
-        });
-      } catch (error) {
-        console.warn(`Failed to create media for ${imageData.filename}:`, error);
-        // Fallback to placeholder
-        return await payload.create({
-          collection: 'media',
-          data: {
-            alt: imageData.alt,
-          },
-          file: {
-            name: 'placeholder.jpg',
-            data: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'),
-            mimetype: 'image/jpeg',
-            size: 68,
-          },
-        });
-      }
-    })
-  );
+  if (!validation.valid) {
+    payload.logger.warn('Missing images detected')
+    validation.missing.forEach(filename => payload.logger.warn(`- ${filename}`))
+    payload.logger.warn('Some images will use placeholder fallbacks')
+  }
+
+  // Upload all veterinary images using the ImageSeeder
+  const productImages = await imageSeeder.uploadImages(VETERINARY_IMAGES, 3) // Smaller batch size for reliability
 
 
 
@@ -420,7 +348,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: homeStaticData(),
+      data: homeStaticData([productImages[6], productImages[7], productImages[8]]), // Pass hero images
     }),
     payload.create({
       collection: 'pages',

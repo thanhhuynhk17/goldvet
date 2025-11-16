@@ -66,7 +66,7 @@ export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText,
           <Media
             resource={media}
             fill
-            className="object-cover mix-blend-overlay opacity-20"
+            imgClassName="object-cover object-center mix-blend-overlay opacity-20"
           />
         </div>
       ) : (

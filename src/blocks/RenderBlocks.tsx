@@ -7,6 +7,8 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { CarouselBlock } from '@/blocks/Carousel/Component'
+import { ContactInfoCards } from '@/blocks/ContactInfoCards/Component'
+
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { HeroCarouselBlock } from '@/blocks/HeroCarousel/Component'
@@ -17,6 +19,12 @@ import { ProductShowcaseBlock } from '@/blocks/ProductShowcase/Component'
 import { ProductDetail } from '@/blocks/ProductDetail/Component'
 import { StatisticsBlock } from '@/blocks/Statistics/Component'
 import { ThreeItemGridBlock } from '@/blocks/ThreeItemGrid/Component'
+import { ContactHero } from '@/blocks/ContactHero/Component'
+import { ContactInfo } from '@/blocks/ContactInfo/Component'
+import { ContactForm } from '@/blocks/ContactForm/Component'
+import { BusinessRegistration } from '@/blocks/BusinessRegistration/Component'
+import { Certifications } from '@/blocks/Certifications/Component'
+import { QuickContact } from '@/blocks/QuickContact/Component'
 import { HighImpactHero } from '@/heros/HighImpact'
 import { LowImpactHero } from '@/heros/LowImpact'
 import { MediumImpactHero } from '@/heros/MediumImpact'
@@ -35,6 +43,8 @@ const blockComponents = {
   archive: ArchiveBlock,
   banner: BannerBlock,
   carousel: CarouselBlock,
+  contactInfoCards: ContactInfoCards,
+
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
@@ -45,6 +55,12 @@ const blockComponents = {
   productShowcase: ProductShowcaseBlock,
   statistics: StatisticsBlock,
   threeItemGrid: ThreeItemGridBlock,
+  contactHero: ContactHero,
+  contactInfo: ContactInfo,
+  contactForm: ContactForm,
+  businessRegistration: BusinessRegistration,
+  certifications: Certifications,
+  quickContact: QuickContact,
 }
 
 const heroComponents = {

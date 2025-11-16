@@ -50,7 +50,7 @@ export const HeroCarouselBlock: React.FC<
               src={slide.image.url}
               alt={slide.title || 'Hero image'}
               fill
-              className="object-cover"
+              className="object-cover object-center"
               priority={index === 0}
             />
           )}
