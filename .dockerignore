@@ -1,0 +1,16 @@
+node_modules
+.pnpm-store
+.next
+dist
+build
+.git
+.gitignore
+Dockerfile*
+docker-compose*
+.env
+.env.local
+.env.development
+.vscode
+.idea
+/uploads
+/media
