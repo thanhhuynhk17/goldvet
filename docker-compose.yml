@@ -1,6 +1,9 @@
 services:
   payload:
     build: .
+    platform: linux/arm64/v8
+    volumes:
+      - ./.next:/app/.next
     ports:
       - "3000:3000"
     env_file:
