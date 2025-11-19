@@ -8,12 +8,6 @@ const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://loc
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',                    // Required for tiny Docker images
-  reactStrictMode: true,
-  experimental: {
-    // Helps with large CSS bundles in Payload admin
-    optimizeCss: true,
-  },
-
   images: {
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
@@ -28,19 +22,7 @@ const nextConfig = {
   },
 
   redirects,
-
-  // ─────────────────────────────────────────────────────────────
-  // 1. Fix "Unclosed block" in Docker (Alpine) – removes broken CssMinimizerPlugin
-  // 2. No more invalid swcMinify warning
-  // ─────────────────────────────────────────────────────────────
   webpack(config, { isServer }) {
-    // Only remove CSS minifier from client bundle (server bundle doesn't use it)
-    if (!isServer) {
-      config.optimization.minimizer = config.optimization.minimizer.filter(
-        (plugin) => plugin.constructor.name !== 'CssMinimizerPlugin'
-      )
-    }
-
     // Your existing extension alias (kept exactly as you had it)
     config.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
