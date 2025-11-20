@@ -12,7 +12,7 @@ export interface ImageConfig {
 
 export class ImageSeeder {
   private payload: Payload
-  private basePath = 'public/media'
+  private basePath = 'public'
 
   constructor(payload: Payload) {
     this.payload = payload
@@ -68,7 +68,7 @@ export class ImageSeeder {
   /**
    * Upload a single image with error handling
    */
-  private async uploadSingleImage(config: ImageConfig): Promise<Media> {
+  public async uploadSingleImage(config: ImageConfig): Promise<Media> {
     try {
       const imageBuffer = await this.readImageFile(config.filename)
 
@@ -200,83 +200,83 @@ export class ImageSeeder {
   }
 }
 
-// Veterinary image configurations
+// Veterinary image configurations - Updated to use goldvet-logo.png for all images since others were deleted
 export const VETERINARY_IMAGES: ImageConfig[] = [
   // Product images
   {
-    filename: 'vet-examining-pig.jpg',
-    alt: 'Veterinarian examining pig on farm',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Veterinary Product',
     category: 'product',
-    tags: ['pig', 'veterinary', 'farming']
+    tags: ['logo', 'veterinary', 'goldvet']
   },
   {
-    filename: 'aquaculture-fish-swimming.jpg',
-    alt: 'Fish swimming in aquaculture facility',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Vaccine',
     category: 'product',
-    tags: ['aquaculture', 'fish', 'farming']
+    tags: ['logo', 'vaccine', 'goldvet']
   },
   {
-    filename: 'livestock-cattle-farm.jpg',
-    alt: 'Cattle on grassy farm field',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Supplement',
     category: 'product',
-    tags: ['cattle', 'livestock', 'farming']
+    tags: ['logo', 'supplement', 'goldvet']
   },
   {
-    filename: 'vet-cattle-exam.jpg',
-    alt: 'Veterinarian performing health check on cattle',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Parasitic Medicine',
     category: 'product',
-    tags: ['cattle', 'veterinary', 'health']
+    tags: ['logo', 'parasitic', 'goldvet']
   },
   {
-    filename: 'vet-examining-horse.jpg',
-    alt: 'Veterinarian examining horse',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Aquaculture Medicine',
     category: 'product',
-    tags: ['horse', 'veterinary', 'animal']
+    tags: ['logo', 'aquaculture', 'goldvet']
   },
   {
-    filename: 'pet-medicine-prescription.jpg',
-    alt: 'Pet medicine and prescription drugs',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Pet Medicine',
     category: 'product',
-    tags: ['pet', 'medicine', 'pharmacy']
+    tags: ['logo', 'pet', 'goldvet']
   },
 
   // Hero/Banner images
   {
-    filename: 'farm-animal-hospital.jpg',
-    alt: 'Farm animal hospital facility',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Farm Animal Hospital',
     category: 'hero',
-    tags: ['hospital', 'facility', 'veterinary']
+    tags: ['logo', 'hospital', 'goldvet']
   },
   {
-    filename: 'aquaculture-fish-farm.jpg',
-    alt: 'Aerial view of aquaculture fish farm',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Aquaculture Farm',
     category: 'hero',
-    tags: ['aquaculture', 'farm', 'farming']
+    tags: ['logo', 'aquaculture', 'goldvet']
   },
   {
-    filename: 'farm-livestock-banner.jpg',
-    alt: 'Farm livestock and poultry banner',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Livestock Banner',
     category: 'hero',
-    tags: ['livestock', 'poultry', 'banner']
+    tags: ['logo', 'livestock', 'goldvet']
   },
 
   // News images
   {
-    filename: 'veterinary-health-products.jpg',
-    alt: 'Veterinary health products display',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Health Products',
     category: 'news',
-    tags: ['products', 'health', 'veterinary']
+    tags: ['logo', 'products', 'goldvet']
   },
   {
-    filename: 'aquaculture-salt-ponds.jpg',
-    alt: 'Aquaculture salt evaporation ponds',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Salt Ponds',
     category: 'news',
-    tags: ['aquaculture', 'salt', 'farming']
+    tags: ['logo', 'aquaculture', 'goldvet']
   },
   {
-    filename: 'farm-products-display.jpg',
-    alt: 'Farm products display with dairy and meat',
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo - Farm Products',
     category: 'news',
-    tags: ['farm', 'products', 'dairy']
+    tags: ['logo', 'farm', 'goldvet']
   }
 ]

@@ -23,6 +23,9 @@ const nextConfig = {
 
   redirects,
   webpack(config, { isServer }) {
+    // if (!isServer) {
+    //   config.optimization.minimize = false;
+    // }
     // Your existing extension alias (kept exactly as you had it)
     config.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

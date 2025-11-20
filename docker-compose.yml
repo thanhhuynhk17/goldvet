@@ -1,11 +1,31 @@
 services:
-  payload:
-    build: .
-    platform: linux/arm64/v8
-    volumes:
-      - ./.next:/app/.next
+  payload_dev:
+    image: node:18-alpine
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    volumes:
+      - .:/home/node/app
+      - ./node_modules:/home/node/app/node_modules
+    environment:
+      - CI=true
+      - NODE_ENV=development
+    working_dir: /home/node/app/
+    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  payload_prod:
+    build:
+      context: .
+      args:
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        DATABASE_URI: ${DATABASE_URI}
+    image: payload-app:latest
+    ports:
+      - "4000:3000"
     env_file:
       - .env
     environment:

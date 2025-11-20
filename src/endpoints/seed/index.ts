@@ -151,18 +151,20 @@ export const seed = async ({
     ),
   ])
 
-  // Validate that all required images exist before seeding
+  // Upload a single goldvet-logo.png image and reuse it for all seeding needs
   const imageSeeder = new ImageSeeder(payload)
-  const validation = await imageSeeder.validateImages(VETERINARY_IMAGES)
-
-  if (!validation.valid) {
-    payload.logger.warn('Missing images detected')
-    validation.missing.forEach(filename => payload.logger.warn(`- ${filename}`))
-    payload.logger.warn('Some images will use placeholder fallbacks')
+  const singleImageConfig = {
+    filename: 'goldvet-logo.png',
+    alt: 'Goldvet Logo',
+    category: 'logo' as const,
+    tags: ['logo', 'goldvet']
   }
 
-  // Upload all veterinary images using the ImageSeeder
-  const productImages = await imageSeeder.uploadImages(VETERINARY_IMAGES, 3) // Smaller batch size for reliability
+  payload.logger.info('— Uploading goldvet logo image...')
+  const logoImage = await imageSeeder.uploadSingleImage(singleImageConfig)
+
+  // Create an array of the same logo image for all seeding references
+  const productImages = Array(12).fill(logoImage)
 
 
 
